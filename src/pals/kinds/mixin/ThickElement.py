@@ -1,5 +1,5 @@
 from typing import Annotated, Literal
-from annotated_types import Gt
+from annotated_types import Ge
 
 from . import BaseElement
 
@@ -11,4 +11,4 @@ class ThickElement(BaseElement):
     kind: Literal["ThickElement"] = "ThickElement"
 
     # Segment length in meters (m)
-    length: Annotated[float, Gt(0)]
+    length: Annotated[float, Ge(0)]
