@@ -30,6 +30,20 @@ jobs:
       - name: Test
         run: |
           pytest tests -v
-      - name: Examples
+      - name: Examples (internal)
         run: |
           python examples/fodo.py
+      - name: Examples (external)
+        run: |
+          # Copy examples directory from the main PALS repository
+          cd examples
+          git clone --no-checkout https://github.com/pals-project/pals.git pals_temp
+          cd pals_temp
+          git sparse-checkout init
+          git sparse-checkout set examples/
+          git checkout main
+          # Test all external examples
+          cd -
+          for file in pals_temp/examples/*.pals.yaml; do
+            python test_external_examples.py --path "${file}"
+          done
