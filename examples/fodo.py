@@ -1,6 +1,3 @@
-import json
-import yaml
-
 from pals import MagneticMultipoleParameters
 from pals import Drift
 from pals import Quadrupole
@@ -45,34 +42,24 @@ def main():
             drift3,
         ],
     )
+
     # Serialize to YAML
-    yaml_data = yaml.dump(line.model_dump(), default_flow_style=False)
-    print("Dumping YAML data...")
-    print(f"{yaml_data}")
-    # Write YAML data to file
-    yaml_file = "examples_fodo.yaml"
-    with open(yaml_file, "w") as file:
-        file.write(yaml_data)
+    yaml_file = "examples_fodo.pals.yaml"
+    line.to_file(yaml_file)
+
     # Read YAML data from file
-    with open(yaml_file, "r") as file:
-        yaml_data = yaml.safe_load(file)
-    # Parse YAML data
-    loaded_line = BeamLine(**yaml_data)
+    loaded_line = BeamLine.from_file(yaml_file)
+
     # Validate loaded data
     assert line == loaded_line
+
     # Serialize to JSON
-    json_data = json.dumps(line.model_dump(), sort_keys=True, indent=2)
-    print("Dumping JSON data...")
-    print(f"{json_data}")
-    # Write JSON data to file
-    json_file = "examples_fodo.json"
-    with open(json_file, "w") as file:
-        file.write(json_data)
+    json_file = "examples_fodo.pals.json"
+    line.to_file(json_file)
+
     # Read JSON data from file
-    with open(json_file, "r") as file:
-        json_data = json.loads(file.read())
-    # Parse JSON data
-    loaded_line = BeamLine(**json_data)
+    loaded_line = BeamLine.from_file(json_file)
+
     # Validate loaded data
     assert line == loaded_line
 
