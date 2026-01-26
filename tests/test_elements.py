@@ -105,7 +105,7 @@ def test_Quadrupole():
     assert element.ElectricMultipoleP.En2 == element_electric_multipole_En2
     assert element.ElectricMultipoleP.Es2 == element_electric_multipole_Es2
     assert element.ElectricMultipoleP.tilt2 == element_electric_multipole_tilt2
-    # Serialize the BeamLine object to YAML
+    # Serialize the element to YAML
     yaml_data = yaml.dump(element.model_dump(), default_flow_style=False)
     print(f"\n{yaml_data}")
 
