@@ -3,6 +3,7 @@ from typing import List, Literal
 
 from .all_elements import get_all_elements_as_annotation
 from .mixin import BaseElement
+from ..functions import load_file_to_dict, store_dict_to_file
 
 
 class BeamLine(BaseElement):
@@ -25,3 +26,14 @@ class BeamLine(BaseElement):
         from pals.kinds.mixin.all_element_mixin import dump_element_list
 
         return dump_element_list(self, "line", *args, **kwargs)
+
+    @staticmethod
+    def from_file(filename: str) -> "BeamLine":
+        """Load a BeamLine from a text file"""
+        pals_dict = load_file_to_dict(filename)
+        return BeamLine(**pals_dict)
+
+    def to_file(self, filename: str):
+        """Save a BeamLine to a text file"""
+        pals_dict = self.model_dump()
+        store_dict_to_file(filename, pals_dict)

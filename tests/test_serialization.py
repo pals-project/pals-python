@@ -1,6 +1,4 @@
-import json
 import os
-import yaml
 
 import pals
 
@@ -13,17 +11,10 @@ def test_yaml():
     # Create line with both elements
     line = pals.BeamLine(name="line", line=[element1, element2])
     # Serialize the BeamLine object to YAML
-    yaml_data = yaml.dump(line.model_dump(), default_flow_style=False)
-    print(f"\n{yaml_data}")
-    # Write the YAML data to a test file
-    test_file = "line.yaml"
-    with open(test_file, "w") as file:
-        file.write(yaml_data)
+    test_file = "line.pals.yaml"
+    line.to_file(test_file)
     # Read the YAML data from the test file
-    with open(test_file, "r") as file:
-        yaml_data = yaml.safe_load(file)
-    # Parse the YAML data back into a BeamLine object
-    loaded_line = pals.BeamLine(**yaml_data)
+    loaded_line = pals.BeamLine.from_file(test_file)
     # Remove the test file
     os.remove(test_file)
     # Validate loaded BeamLine object
@@ -38,17 +29,10 @@ def test_json():
     # Create line with both elements
     line = pals.BeamLine(name="line", line=[element1, element2])
     # Serialize the BeamLine object to JSON
-    json_data = json.dumps(line.model_dump(), sort_keys=True, indent=2)
-    print(f"\n{json_data}")
-    # Write the JSON data to a test file
-    test_file = "line.json"
-    with open(test_file, "w") as file:
-        file.write(json_data)
+    test_file = "line.pals.json"
+    line.to_file(test_file)
     # Read the JSON data from the test file
-    with open(test_file, "r") as file:
-        json_data = json.loads(file.read())
-    # Parse the JSON data back into a BeamLine object
-    loaded_line = pals.BeamLine(**json_data)
+    loaded_line = pals.BeamLine.from_file(test_file)
     # Remove the test file
     os.remove(test_file)
     # Validate loaded BeamLine object
@@ -224,21 +208,16 @@ def test_comprehensive_lattice():
         ],
     )
 
-    # Test serialization to YAML
-    yaml_data = yaml.dump(lattice.model_dump(), default_flow_style=False)
-    print(f"\nComprehensive lattice YAML:\n{yaml_data}")
-
     # Write to temporary file
-    yaml_file = "comprehensive_lattice.yaml"
-    with open(yaml_file, "w") as file:
-        file.write(yaml_data)
+    yaml_file = "comprehensive_lattice.pals.yaml"
+    lattice.to_file(yaml_file)
 
     # Read back from file
     with open(yaml_file, "r") as file:
-        loaded_yaml_data = yaml.safe_load(file)
+        print(f"\nComprehensive lattice YAML:\n{file.read()}")
 
     # Deserialize back to Python object using Pydantic model logic
-    loaded_lattice = pals.BeamLine(**loaded_yaml_data)
+    loaded_lattice = pals.BeamLine.from_file(yaml_file)
 
     # Verify the loaded lattice has the correct structure and parameter groups
     assert len(loaded_lattice.line) == 31  # Should have 31 elements
@@ -284,21 +263,16 @@ def test_comprehensive_lattice():
     assert unionele_loaded.elements[1].kind == "Drift"
     assert unionele_loaded.elements[1].length == 0.1
 
-    # Test serialization to JSON
-    json_data = json.dumps(lattice.model_dump(), sort_keys=True, indent=2)
-    print(f"\nComprehensive lattice JSON:\n{json_data}")
-
     # Write to temporary file
-    json_file = "comprehensive_lattice.json"
-    with open(json_file, "w") as file:
-        file.write(json_data)
+    json_file = "comprehensive_lattice.pals.json"
+    lattice.to_file(json_file)
 
     # Read back from file
     with open(json_file, "r") as file:
-        loaded_json_data = json.loads(file.read())
+        print(f"\nComprehensive lattice JSON:\n{file.read()}")
 
     # Deserialize back to Python object using Pydantic model logic
-    loaded_lattice_json = pals.BeamLine(**loaded_json_data)
+    loaded_lattice_json = pals.BeamLine.from_file(json_file)
 
     # Verify the loaded lattice has the correct structure and parameter groups
     assert len(loaded_lattice_json.line) == 31  # Should have 31 elements
