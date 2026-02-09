@@ -1,5 +1,4 @@
 import argparse
-import yaml
 
 from pals import BeamLine
 
@@ -14,12 +13,8 @@ def main():
     )
     args = parser.parse_args()
     example_file = args.path
-    # Read YAML data from file
-    with open(example_file, "r") as file:
-        data = yaml.safe_load(file)
-    # Parse and validate YAML data
-    print(f"Parsing data from {example_file}...")
-    BeamLine(**data)
+    # Parse and validate YAML data from file
+    BeamLine.from_file(example_file)
 
 
 if __name__ == "__main__":
