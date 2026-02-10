@@ -1,6 +1,6 @@
 import argparse
 
-from pals import BeamLine
+from pals import Lattice
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
     example_file = args.path
     # Parse and validate YAML data from file
-    BeamLine.from_file(example_file)
+    Lattice.from_file(example_file)
 
 
 if __name__ == "__main__":
