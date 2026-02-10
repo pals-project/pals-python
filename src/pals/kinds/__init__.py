@@ -5,6 +5,7 @@ simpler import statements like `from pals import Drift`.
 from .ACKicker import ACKicker  # noqa: F401
 from .BeamBeam import BeamBeam  # noqa: F401
 from .BeamLine import BeamLine  # noqa: F401
+from .Lattice import Lattice  # noqa: F401
 from .BeginningEle import BeginningEle  # noqa: F401
 from .Converter import Converter  # noqa: F401
 from .CrabCavity import CrabCavity  # noqa: F401
@@ -39,3 +40,4 @@ from .Wiggler import Wiggler  # noqa: F401
 # Rebuild pydantic models that depend on other classes
 UnionEle.model_rebuild()
 BeamLine.model_rebuild()
+Lattice.model_rebuild()
