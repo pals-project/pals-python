@@ -11,7 +11,7 @@ class Lattice(BaseElement):
 
     kind: Literal["Lattice"] = "Lattice"
 
-    line: List[get_all_elements_as_annotation()]
+    branches: List[Annotated[Union[BeamLine], Field(discriminator="kind")]]
 
     @model_validator(mode="before")
     @classmethod
