@@ -1,7 +1,7 @@
-from pydantic import model_validator
-from typing import List, Literal
+from pydantic import model_validator, Field
+from typing import Annotated, List, Literal, Union
 
-from .all_elements import get_all_elements_as_annotation
+from .BeamLine import BeamLine
 from .mixin import BaseElement
 from ..functions import load_file_to_dict, store_dict_to_file
 
