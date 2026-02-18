@@ -171,40 +171,45 @@ def test_comprehensive_lattice():
     wiggler = pals.Wiggler(name="wiggler1", length=2.0)
 
     # Create comprehensive lattice
-    lattice = pals.BeamLine(
+    lattice = pals.Lattice(
         name="comprehensive_lattice",
-        line=[
-            beginning,  # Start with beginning element
-            fiducial,  # Global coordinate reference
-            marker,  # Mark position
-            drift,  # Field-free region
-            quadrupole,  # Focusing element
-            sextupole,  # Chromatic correction
-            octupole,  # Higher order correction
-            multipole,  # General multipole
-            rbend,  # Rectangular bend
-            sbend,  # Sector bend
-            solenoid,  # Longitudinal focusing
-            rfcavity,  # RF acceleration
-            crabcavity,  # RF crab cavity
-            kicker,  # Transverse kick
-            ackicker,  # AC kicker
-            patch,  # Coordinate transformation
-            floorshift,  # Global coordinate shift
-            instrument,  # Measurement device
-            mask,  # Collimation
-            match,  # Matching element
-            egun,  # Electron source
-            converter,  # Species conversion
-            foil,  # Electron stripping
-            beambeam,  # Colliding beams
-            feedback,  # Feedback system
-            girder,  # Support structure
-            fork,  # Branch connection
-            taylor,  # Taylor map
-            unionele,  # Overlapping elements
-            wiggler,  # Undulator
-            nullele,  # Placeholder
+        branches=[
+            pals.BeamLine(
+                name="comprehensive_beamline",
+                line=[
+                    beginning,  # Start with beginning element
+                    fiducial,  # Global coordinate reference
+                    marker,  # Mark position
+                    drift,  # Field-free region
+                    quadrupole,  # Focusing element
+                    sextupole,  # Chromatic correction
+                    octupole,  # Higher order correction
+                    multipole,  # General multipole
+                    rbend,  # Rectangular bend
+                    sbend,  # Sector bend
+                    solenoid,  # Longitudinal focusing
+                    rfcavity,  # RF acceleration
+                    crabcavity,  # RF crab cavity
+                    kicker,  # Transverse kick
+                    ackicker,  # AC kicker
+                    patch,  # Coordinate transformation
+                    floorshift,  # Global coordinate shift
+                    instrument,  # Measurement device
+                    mask,  # Collimation
+                    match,  # Matching element
+                    egun,  # Electron source
+                    converter,  # Species conversion
+                    foil,  # Electron stripping
+                    beambeam,  # Colliding beams
+                    feedback,  # Feedback system
+                    girder,  # Support structure
+                    fork,  # Branch connection
+                    taylor,  # Taylor map
+                    unionele,  # Overlapping elements
+                    wiggler,  # Undulator
+                    nullele,  # Placeholder
+                ],
+            )
         ],
     )
 
@@ -217,10 +222,13 @@ def test_comprehensive_lattice():
         print(f"\nComprehensive lattice YAML:\n{file.read()}")
 
     # Deserialize back to Python object using Pydantic model logic
-    loaded_lattice = pals.BeamLine.from_file(yaml_file)
+    loaded_lattice = pals.Lattice.from_file(yaml_file)
 
     # Verify the loaded lattice has the correct structure and parameter groups
-    assert len(loaded_lattice.line) == 31  # Should have 31 elements
+    assert len(loaded_lattice.branches) == 1  # Should have 1 branch
+    assert (
+        len(loaded_lattice.branches[0].line) == 31
+    )  # Should have 31 elements in the branch
 
     # Verify specific elements with parameter groups are correctly loaded
     sextupole_loaded = None
@@ -229,7 +237,7 @@ def test_comprehensive_lattice():
     rfcavity_loaded = None
     unionele_loaded = None
 
-    for elem in loaded_lattice.line:
+    for elem in loaded_lattice.branches[0].line:
         if elem.name == "sextupole1":
             sextupole_loaded = elem
         elif elem.name == "octupole1":
@@ -272,10 +280,13 @@ def test_comprehensive_lattice():
         print(f"\nComprehensive lattice JSON:\n{file.read()}")
 
     # Deserialize back to Python object using Pydantic model logic
-    loaded_lattice_json = pals.BeamLine.from_file(json_file)
+    loaded_lattice_json = pals.Lattice.from_file(json_file)
 
     # Verify the loaded lattice has the correct structure and parameter groups
-    assert len(loaded_lattice_json.line) == 31  # Should have 31 elements
+    assert len(loaded_lattice_json.branches) == 1  # Should have 1 branch
+    assert (
+        len(loaded_lattice_json.branches[0].line) == 31
+    )  # Should have 31 elements in the branch
 
     # Verify specific elements with parameter groups are correctly loaded
     sextupole_loaded_json = None
@@ -284,7 +295,7 @@ def test_comprehensive_lattice():
     rfcavity_loaded_json = None
     unionele_loaded_json = None
 
-    for elem in loaded_lattice_json.line:
+    for elem in loaded_lattice_json.branches[0].line:
         if elem.name == "sextupole1":
             sextupole_loaded_json = elem
         elif elem.name == "octupole1":

@@ -511,3 +511,29 @@ def test_UnionEle():
     assert len(element_with_children.elements) == 2
     assert element_with_children.elements[0].name == "m1"
     assert element_with_children.elements[1].name == "d1"
+
+
+def test_Lattice():
+    # Create first line with one base element
+    element1 = pals.Marker(name="element1")
+    line1 = pals.BeamLine(name="line1", line=[element1])
+    assert line1.line == [element1]
+    # Extend first line with one thick element
+    element2 = pals.Drift(name="element2", length=2.0)
+    line1.line.extend([element2])
+    assert line1.line == [element1, element2]
+    # Create second line with one drift element
+    element3 = pals.Drift(name="element3", length=3.0)
+    line2 = pals.BeamLine(name="line2", line=[element3])
+    # Extend first line with second line
+    line1.line.extend(line2.line)
+    assert line1.line == [element1, element2, element3]
+    # Build lattice with two lines
+    lattice = pals.Lattice(name="lattice", branches=[line1, line2])
+    assert lattice.name == "lattice"
+    assert lattice.kind == "Lattice"
+    assert len(lattice.branches) == 2
+    assert lattice.branches[0].name == "line1"
+    assert lattice.branches[1].name == "line2"
+    assert lattice.branches[0].line == [element1, element2, element3]
+    assert lattice.branches[1].line == [element3]

@@ -2,6 +2,7 @@ from pals import MagneticMultipoleParameters
 from pals import Drift
 from pals import Quadrupole
 from pals import BeamLine
+from pals import Lattice
 
 
 def main():
@@ -42,26 +43,31 @@ def main():
             drift3,
         ],
     )
+    # Create lattice with the line as a branch
+    lattice = Lattice(
+        name="fodo_lattice",
+        branches=[line],
+    )
 
     # Serialize to YAML
     yaml_file = "examples_fodo.pals.yaml"
-    line.to_file(yaml_file)
+    lattice.to_file(yaml_file)
 
     # Read YAML data from file
-    loaded_line = BeamLine.from_file(yaml_file)
+    loaded_lattice = Lattice.from_file(yaml_file)
 
     # Validate loaded data
-    assert line == loaded_line
+    assert lattice == loaded_lattice
 
     # Serialize to JSON
     json_file = "examples_fodo.pals.json"
-    line.to_file(json_file)
+    lattice.to_file(json_file)
 
     # Read JSON data from file
-    loaded_line = BeamLine.from_file(json_file)
+    loaded_lattice = Lattice.from_file(json_file)
 
     # Validate loaded data
-    assert line == loaded_line
+    assert lattice == loaded_lattice
 
 
 if __name__ == "__main__":

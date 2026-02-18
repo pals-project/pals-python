@@ -43,6 +43,7 @@ from .Wiggler import Wiggler
 def get_all_element_types(extra_types: tuple = None):
     """Return a tuple of all element types that can be used in BeamLine or UnionEle."""
     element_types = (
+        "Lattice",  # Forward reference to handle circular import
         "BeamLine",  # Forward reference to handle circular import
         "UnionEle",  # Forward reference to handle circular import
         ACKicker,
