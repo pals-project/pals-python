@@ -537,3 +537,34 @@ def test_Lattice():
     assert lattice.branches[1].name == "line2"
     assert lattice.branches[0].line == [element1, element2, element3]
     assert lattice.branches[1].line == [element3]
+
+
+def test_BeamLine_with_string_references():
+    """Test BeamLine with string references to elements defined elsewhere"""
+    import yaml
+
+    # Test YAML deserialization with string references
+    yaml_data = """
+    fodo_cell:
+        kind: BeamLine
+        line:
+          - drift1
+          - quad1
+          - drift2:
+              kind: Drift
+              length: 0.5
+    """
+
+    data = yaml.safe_load(yaml_data)
+    beamline = pals.BeamLine(**data)
+
+    assert beamline.name == "fodo_cell"
+    assert len(beamline.line) == 3
+    # First element should be a string reference
+    assert beamline.line[0] == "drift1"
+    # Second element should be a string reference
+    assert beamline.line[1] == "quad1"
+    # Third element should be a Drift object
+    assert isinstance(beamline.line[2], pals.Drift)
+    assert beamline.line[2].name == "drift2"
+    assert beamline.line[2].length == 0.5

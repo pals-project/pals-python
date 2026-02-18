@@ -83,6 +83,13 @@ def get_all_element_types(extra_types: tuple = None):
 
 
 def get_all_elements_as_annotation(extra_types: tuple = None):
-    """Return the Union type of all allowed elements with their name as the discriminator field."""
+    """Return the Union type of all allowed elements with their name as the discriminator field.
+
+    Note: When str is included in the union (for string references), we cannot use
+    discriminator since str doesn't have a 'kind' field. Pydantic will still properly
+    validate the union by trying each type in order.
+    """
     types = get_all_element_types(extra_types)
-    return Annotated[Union[types], Field(discriminator="kind")]
+    # Add str to support string references to named elements
+    # We can't use discriminator with str in the union since str has no 'kind' field
+    return Union[types + (str,)]

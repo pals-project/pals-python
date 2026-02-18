@@ -44,7 +44,9 @@ def unpack_element_list_structure(
     for item in data[field_name]:
         # An element can be a string that refers to another element
         if isinstance(item, str):
-            raise RuntimeError("Reference/alias elements not yet implemented")
+            # Keep the string reference as-is - it will be validated later
+            new_list.append(item)
+            continue
         # An element can be a dict
         elif isinstance(item, dict):
             if not (len(item) == 1):
