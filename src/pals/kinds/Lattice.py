@@ -7,7 +7,7 @@ from ..functions import load_file_to_dict, store_dict_to_file
 
 
 class Lattice(BaseElement):
-    """A line of elements and/or other lines"""
+    """A lattice combines beamlines"""
 
     kind: Literal["Lattice"] = "Lattice"
 
