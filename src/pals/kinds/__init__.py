@@ -11,6 +11,7 @@ from .Converter import Converter  # noqa: F401
 from .CrabCavity import CrabCavity  # noqa: F401
 from .Drift import Drift  # noqa: F401
 from .EGun import EGun  # noqa: F401
+from .ElementReference import ElementReference  # noqa: F401
 from .Feedback import Feedback  # noqa: F401
 from .Fiducial import Fiducial  # noqa: F401
 from .FloorShift import FloorShift  # noqa: F401

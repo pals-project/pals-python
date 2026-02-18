@@ -5,6 +5,7 @@ BeamLine and UnionEle classes.
 """
 
 from . import BaseElement
+from ..ElementReference import ElementReference
 
 
 def unpack_element_list_structure(
@@ -44,7 +45,12 @@ def unpack_element_list_structure(
     for item in data[field_name]:
         # An element can be a string that refers to another element
         if isinstance(item, str):
-            # Keep the string reference as-is - it will be validated later
+            # Wrap the string in an ElementReference object
+            new_list.append(ElementReference(item))
+            continue
+        # An element can be an ElementReference instance directly
+        elif isinstance(item, ElementReference):
+            # Keep the ElementReference as-is
             new_list.append(item)
             continue
         # An element can be a dict
@@ -71,7 +77,7 @@ def unpack_element_list_structure(
                 continue
 
             raise TypeError(
-                f"Value must be a reference string or a dict, but we got {item!r}"
+                f"Value must be a reference string, ElementReference, or a dict, but we got {item!r}"
             )
 
     data[field_name] = new_list

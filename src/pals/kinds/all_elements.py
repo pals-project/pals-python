@@ -4,9 +4,8 @@ This module creates a helper function that returns the element union type,
 avoiding duplication between BeamLine.line and UnionEle.elements.
 """
 
-from typing import Annotated, Union
+from typing import Union
 
-from pydantic import Field
 
 from .ACKicker import ACKicker
 from .BeamBeam import BeamBeam
@@ -15,6 +14,7 @@ from .Converter import Converter
 from .CrabCavity import CrabCavity
 from .Drift import Drift
 from .EGun import EGun
+from .ElementReference import ElementReference
 from .Feedback import Feedback
 from .Fiducial import Fiducial
 from .FloorShift import FloorShift
@@ -85,11 +85,11 @@ def get_all_element_types(extra_types: tuple = None):
 def get_all_elements_as_annotation(extra_types: tuple = None):
     """Return the Union type of all allowed elements with their name as the discriminator field.
 
-    Note: When str is included in the union (for string references), we cannot use
-    discriminator since str doesn't have a 'kind' field. Pydantic will still properly
-    validate the union by trying each type in order.
+    Note: ElementReference is included to support string references to named elements.
+    Since ElementReference doesn't have a 'kind' field, we cannot use discriminator.
+    Pydantic will still properly validate the union by trying each type in order in
+    our unpack_element_list_structure method.
     """
-    types = get_all_element_types(extra_types)
-    # Add str to support string references to named elements
-    # We can't use discriminator with str in the union since str has no 'kind' field
-    return Union[types + (str,)]
+    types = get_all_element_types(extra_types) + (ElementReference,)
+    # We can't use discriminator with ElementReference in the union since it has no 'kind' field
+    return Union[types]
