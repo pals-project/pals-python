@@ -19,13 +19,13 @@ class Lattice(BaseElement):
         """Deserialize the JSON/YAML/...-like dict for Lattice elements"""
         from pals.kinds.mixin.all_element_mixin import unpack_element_list_structure
 
-        return unpack_element_list_structure(data, "line", "line")
+        return unpack_element_list_structure(data, "branches", "branches")
 
     def model_dump(self, *args, **kwargs):
         """Custom model dump for Lattice to handle element list formatting"""
         from pals.kinds.mixin.all_element_mixin import dump_element_list
 
-        return dump_element_list(self, "line", *args, **kwargs)
+        return dump_element_list(self, "branches", *args, **kwargs)
 
     @staticmethod
     def from_file(filename: str) -> "Lattice":
