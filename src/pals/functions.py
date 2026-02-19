@@ -63,14 +63,14 @@ def store_dict_to_file(filename: str, pals_dict: dict):
     if extension == ".json":
         import json
 
-        json_data = json.dumps(pals_dict, sort_keys=True, indent=2)
+        json_data = json.dumps(pals_dict, sort_keys=False, indent=2)
         with open(filename, "w") as file:
             file.write(json_data)
 
     elif extension == ".yaml":
         import yaml
 
-        yaml_data = yaml.dump(pals_dict, default_flow_style=False)
+        yaml_data = yaml.dump(pals_dict, default_flow_style=False, sort_keys=False)
         with open(filename, "w") as file:
             file.write(yaml_data)
 

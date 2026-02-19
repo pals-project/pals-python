@@ -26,6 +26,7 @@ from .Multipole import Multipole  # noqa: F401
 from .NullEle import NullEle  # noqa: F401
 from .Octupole import Octupole  # noqa: F401
 from .Patch import Patch  # noqa: F401
+from .PlaceholderName import PlaceholderName  # noqa: F401
 from .Quadrupole import Quadrupole  # noqa: F401
 from .RBend import RBend  # noqa: F401
 from .RFCavity import RFCavity  # noqa: F401
