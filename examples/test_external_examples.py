@@ -1,6 +1,6 @@
 import argparse
 
-from pals import Lattice
+from pals import load
 
 
 def main():
@@ -14,7 +14,8 @@ def main():
     args = parser.parse_args()
     example_file = args.path
     # Parse and validate YAML data from file
-    Lattice.from_file(example_file)
+    lattice = load(example_file)
+    print(lattice.facility[0])
 
 
 if __name__ == "__main__":
