@@ -38,5 +38,5 @@ jobs:
       - name: Run upstream examples
         run: |
           for file in pals_temp/examples/*.pals.yaml; do
-            python test_upstream_examples.py --path "${file}"
+            python tests/test_upstream_examples.py --path "${file}"
           done
