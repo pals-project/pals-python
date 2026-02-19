@@ -110,5 +110,8 @@ def dump_element_list(self, field_name: str, *args, **kwargs) -> dict:
         elem_dict = elem.model_dump(**kwargs)
         new_list.append(elem_dict)
 
-    data[self.name][field_name] = new_list
+    if hasattr(self, "name"):  # all but PALSroot have a name
+        data[self.name][field_name] = new_list
+    else:
+        data[field_name] = new_list
     return data
