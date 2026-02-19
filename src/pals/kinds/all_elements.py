@@ -14,7 +14,7 @@ from .Converter import Converter
 from .CrabCavity import CrabCavity
 from .Drift import Drift
 from .EGun import EGun
-from .ElementReference import ElementReference
+from .PlaceholderName import PlaceholderName
 from .Feedback import Feedback
 from .Fiducial import Fiducial
 from .FloorShift import FloorShift
@@ -83,13 +83,13 @@ def get_all_element_types(extra_types: tuple = None):
 
 
 def get_all_elements_as_annotation(extra_types: tuple = None):
-    """Return the Union type of all allowed elements with their name as the discriminator field.
+    """Return the Union type of all allowed elements with their kind as the discriminator field.
 
-    Note: ElementReference is included to support string references to named elements.
-    Since ElementReference doesn't have a 'kind' field, we cannot use discriminator.
+    Note: PlaceholderName is included to support string references to named elements.
+    Since PlaceholderName doesn't have a 'kind' field, we cannot use discriminator.
     Pydantic will still properly validate the union by trying each type in order in
     our unpack_element_list_structure method.
     """
-    types = get_all_element_types(extra_types) + (ElementReference,)
-    # We can't use discriminator with ElementReference in the union since it has no 'kind' field
+    types = get_all_element_types(extra_types) + (PlaceholderName,)
+    # We can't use discriminator with PlaceholderName in the union since it has no 'kind' field
     return Union[types]

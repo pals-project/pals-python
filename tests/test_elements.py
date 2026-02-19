@@ -561,15 +561,15 @@ def test_BeamLine_with_string_references():
     assert beamline.name == "fodo_cell"
     assert len(beamline.line) == 3
 
-    # First element should be an ElementReference that behaves like the string "drift1"
-    assert isinstance(beamline.line[0], pals.ElementReference)
+    # First element should be a PlaceholderName that behaves like the string "drift1"
+    assert isinstance(beamline.line[0], pals.PlaceholderName)
     assert beamline.line[0] == "drift1"
     assert beamline.line[0].name == "drift1"
     assert beamline.line[0].element is None  # Not yet resolved
     assert not beamline.line[0].is_resolved()
 
-    # Second element should be an ElementReference that behaves like the string "quad1"
-    assert isinstance(beamline.line[1], pals.ElementReference)
+    # Second element should be a PlaceholderName that behaves like the string "quad1"
+    assert isinstance(beamline.line[1], pals.PlaceholderName)
     assert beamline.line[1] == "quad1"
     assert beamline.line[1].name == "quad1"
     assert beamline.line[1].element is None  # Not yet resolved
@@ -588,17 +588,17 @@ def test_BeamLine_with_string_references():
     assert beamline.line[0].element.length == 1.0
 
 
-def test_ElementReference_direct():
-    """Test ElementReference creation and behavior directly"""
+def test_PlaceholderName_direct():
+    """Test PlaceholderName creation and behavior directly"""
     # Test creation with positional argument
-    ref1 = pals.ElementReference("test_element")
+    ref1 = pals.PlaceholderName("test_element")
     assert ref1.name == "test_element"
     assert str(ref1) == "test_element"
     assert ref1 == "test_element"
     assert not ref1.is_resolved()
 
     # Test creation with keyword argument
-    ref2 = pals.ElementReference(name="another_element")
+    ref2 = pals.PlaceholderName(name="another_element")
     assert ref2.name == "another_element"
     assert str(ref2) == "another_element"
     assert ref2 == "another_element"

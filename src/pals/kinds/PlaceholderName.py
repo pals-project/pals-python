@@ -1,13 +1,14 @@
-"""Element reference class for referring to elements by name."""
-
 from pydantic import BaseModel, Field, model_serializer
 from typing import Annotated
 
 from .mixin import BaseElement
 
 
-class ElementReference(BaseModel):
-    """A pydantic model that represents a reference to a named element.
+class PlaceholderName(BaseModel):
+    """Represents a reference to a named element.
+
+    This placeholder is replaced with a physically distinct
+    element during beamline expansion.
 
     This class behaves like a string (via __str__ and __eq__) but stores
     a true reference to the actual element object once it's resolved.
@@ -19,7 +20,7 @@ class ElementReference(BaseModel):
         element: A reference to the resolved element object (None until resolved)
 
     Example:
-        >>> ref = ElementReference(name="drift1")
+        >>> ref = PlaceholderName(name="drift1")
         >>> ref.name
         'drift1'
         >>> str(ref)
@@ -65,7 +66,7 @@ class ElementReference(BaseModel):
         """Enable string comparison."""
         if isinstance(other, str):
             return self.name == other
-        if isinstance(other, ElementReference):
+        if isinstance(other, PlaceholderName):
             return self.name == other.name and self.element is other.element
         return False
 
@@ -78,6 +79,6 @@ class ElementReference(BaseModel):
         return self.element is not None
 
     def __repr__(self) -> str:
-        """Return a representation of the ElementReference."""
+        """Return a representation of the PlaceholderName."""
         resolved = "resolved" if self.is_resolved() else "unresolved"
-        return f"ElementReference('{self.name}', {resolved})"
+        return f"PlaceholderName('{self.name}', {resolved})"

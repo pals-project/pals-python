@@ -11,7 +11,6 @@ from .Converter import Converter  # noqa: F401
 from .CrabCavity import CrabCavity  # noqa: F401
 from .Drift import Drift  # noqa: F401
 from .EGun import EGun  # noqa: F401
-from .ElementReference import ElementReference  # noqa: F401
 from .Feedback import Feedback  # noqa: F401
 from .Fiducial import Fiducial  # noqa: F401
 from .FloorShift import FloorShift  # noqa: F401
@@ -27,6 +26,7 @@ from .Multipole import Multipole  # noqa: F401
 from .NullEle import NullEle  # noqa: F401
 from .Octupole import Octupole  # noqa: F401
 from .Patch import Patch  # noqa: F401
+from .PlaceholderName import PlaceholderName  # noqa: F401
 from .Quadrupole import Quadrupole  # noqa: F401
 from .RBend import RBend  # noqa: F401
 from .RFCavity import RFCavity  # noqa: F401
