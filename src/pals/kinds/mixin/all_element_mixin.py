@@ -5,6 +5,7 @@ BeamLine and UnionEle classes.
 """
 
 from . import BaseElement
+from ..PlaceholderName import PlaceholderName
 
 
 def unpack_element_list_structure(
@@ -44,7 +45,14 @@ def unpack_element_list_structure(
     for item in data[field_name]:
         # An element can be a string that refers to another element
         if isinstance(item, str):
-            raise RuntimeError("Reference/alias elements not yet implemented")
+            # Wrap the string in a Placeholder name object
+            new_list.append(PlaceholderName(item))
+            continue
+        # An element can be a PlaceholderName instance directly
+        elif isinstance(item, PlaceholderName):
+            # Keep the PlaceholderName as-is
+            new_list.append(item)
+            continue
         # An element can be a dict
         elif isinstance(item, dict):
             if not (len(item) == 1):
@@ -69,7 +77,7 @@ def unpack_element_list_structure(
                 continue
 
             raise TypeError(
-                f"Value must be a reference string or a dict, but we got {item!r}"
+                f"Value must be a reference string, PlaceholderName, or a dict, but we got {item!r}"
             )
 
     data[field_name] = new_list
