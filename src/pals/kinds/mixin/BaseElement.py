@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Literal, Optional
+from typing import Literal
 
 from pals.parameters import (
     ApertureParameters,
@@ -22,13 +22,13 @@ class BaseElement(BaseModel, validate_assignment=True):
     name: str
 
     # Common parameter groups (optional for all elements)
-    ApertureP: Optional[ApertureParameters] = None
-    BodyShiftP: Optional[BodyShiftParameters] = None
-    FloorP: Optional[FloorParameters] = None
-    MetaP: Optional[MetaParameters] = None
-    ReferenceP: Optional[ReferenceParameters] = None
-    ReferenceChangeP: Optional[ReferenceChangeParameters] = None
-    TrackingP: Optional[TrackingParameters] = None
+    ApertureP: ApertureParameters | None = None
+    BodyShiftP: BodyShiftParameters | None = None
+    FloorP: FloorParameters | None = None
+    MetaP: MetaParameters | None = None
+    ReferenceP: ReferenceParameters | None = None
+    ReferenceChangeP: ReferenceChangeParameters | None = None
+    TrackingP: TrackingParameters | None = None
 
     def model_dump(self, *args, **kwargs):
         """This makes sure the element name property is moved out and up to a one-key dictionary"""

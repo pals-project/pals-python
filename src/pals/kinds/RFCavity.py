@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import ThickElement
 from ..parameters import (
@@ -18,8 +18,8 @@ class RFCavity(ThickElement):
     kind: Literal["RFCavity"] = "RFCavity"
 
     # RF-specific parameters
-    RFP: Optional[RFParameters] = None
-    SolenoidP: Optional[SolenoidParameters] = None
+    RFP: RFParameters | None = None
+    SolenoidP: SolenoidParameters | None = None
 
-    ElectricMultipoleP: Optional[ElectricMultipoleParameters] = None
-    MagneticMultipoleP: Optional[MagneticMultipoleParameters] = None
+    ElectricMultipoleP: ElectricMultipoleParameters | None = None
+    MagneticMultipoleP: MagneticMultipoleParameters | None = None

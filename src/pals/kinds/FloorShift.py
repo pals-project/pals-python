@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import BaseElement
 from ..parameters import FloorShiftParameters
@@ -11,4 +11,4 @@ class FloorShift(BaseElement):
     kind: Literal["FloorShift"] = "FloorShift"
 
     # Floor shift-specific parameters
-    FloorShiftP: Optional[FloorShiftParameters] = None
+    FloorShiftP: FloorShiftParameters | None = None

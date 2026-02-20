@@ -8,7 +8,7 @@ from typing import TypeVar
 T = TypeVar("T", bound=type)
 
 
-def under_construction(element_name: str = None):
+def under_construction(element_name: str | None = None):
     """
     Compact decorator to mark an element as under construction.
 

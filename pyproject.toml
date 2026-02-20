@@ -10,7 +10,7 @@ dependencies = [
   "pyyaml",
   "toml",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
   { name="Axel Huebl", email="axelhuebl@lbl.gov" },
   { name="Edoardo Zoni", email="ezoni@lbl.gov" },

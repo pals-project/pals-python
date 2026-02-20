@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import ThickElement
 from ..parameters import (
@@ -17,7 +17,7 @@ class Solenoid(ThickElement):
     kind: Literal["Solenoid"] = "Solenoid"
 
     # Solenoid-specific parameters
-    SolenoidP: Optional[SolenoidParameters] = None
+    SolenoidP: SolenoidParameters | None = None
 
-    ElectricMultipoleP: Optional[ElectricMultipoleParameters] = None
-    MagneticMultipoleP: Optional[MagneticMultipoleParameters] = None
+    ElectricMultipoleP: ElectricMultipoleParameters | None = None
+    MagneticMultipoleP: MagneticMultipoleParameters | None = None

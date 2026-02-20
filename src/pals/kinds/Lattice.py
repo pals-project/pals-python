@@ -1,5 +1,5 @@
 from pydantic import model_validator
-from typing import List, Literal, Union
+from typing import Literal, Self
 
 from .BeamLine import BeamLine
 from .PlaceholderName import PlaceholderName
@@ -12,7 +12,7 @@ class Lattice(BaseElement):
 
     kind: Literal["Lattice"] = "Lattice"
 
-    branches: List[Union[BeamLine, PlaceholderName]]
+    branches: list[BeamLine | PlaceholderName]
 
     @model_validator(mode="before")
     @classmethod
@@ -29,7 +29,7 @@ class Lattice(BaseElement):
         return dump_element_list(self, "branches", *args, **kwargs)
 
     @staticmethod
-    def from_file(filename: str) -> "Lattice":
+    def from_file(filename: str) -> Self:
         """Load a Lattice from a text file"""
         pals_dict = load_file_to_dict(filename)
         return Lattice(**pals_dict)

@@ -1,5 +1,5 @@
 from pydantic import model_validator
-from typing import List, Literal
+from typing import Literal, Self
 
 from .all_elements import get_all_elements_as_annotation
 from .mixin import BaseElement
@@ -11,7 +11,7 @@ class BeamLine(BaseElement):
 
     kind: Literal["BeamLine"] = "BeamLine"
 
-    line: List[get_all_elements_as_annotation()]
+    line: list[get_all_elements_as_annotation()]
 
     @model_validator(mode="before")
     @classmethod
@@ -28,7 +28,7 @@ class BeamLine(BaseElement):
         return dump_element_list(self, "line", *args, **kwargs)
 
     @staticmethod
-    def from_file(filename: str) -> "BeamLine":
+    def from_file(filename: str) -> Self:
         """Load a BeamLine from a text file"""
         pals_dict = load_file_to_dict(filename)
         return BeamLine(**pals_dict)

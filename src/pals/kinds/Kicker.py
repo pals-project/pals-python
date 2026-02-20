@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import ThickElement
 from ..parameters import ElectricMultipoleParameters, MagneticMultipoleParameters
@@ -13,5 +13,5 @@ class Kicker(ThickElement):
     kind: Literal["Kicker"] = "Kicker"
 
     # Kicker-specific parameters
-    ElectricMultipoleP: Optional[ElectricMultipoleParameters] = None
-    MagneticMultipoleP: Optional[MagneticMultipoleParameters] = None
+    ElectricMultipoleP: ElectricMultipoleParameters | None = None
+    MagneticMultipoleP: MagneticMultipoleParameters | None = None

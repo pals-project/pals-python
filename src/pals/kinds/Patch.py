@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import ThickElement
 from ..parameters import PatchParameters
@@ -13,4 +13,4 @@ class Patch(ThickElement):
     kind: Literal["Patch"] = "Patch"
 
     # Patch-specific parameters
-    PatchP: Optional[PatchParameters] = None
+    PatchP: PatchParameters | None = None
