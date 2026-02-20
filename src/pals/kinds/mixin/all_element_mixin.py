@@ -61,10 +61,13 @@ def unpack_element_list_structure(
                     f"but we got {item!r}"
                 )
             name, fields = list(item.items())[0]
-            # Allow a shorthand usage: `- use: element_name` in examples.
-            # If the value is not a dict but the key is 'use', treat it as
-            # a reference to an existing element name and wrap it in a
-            # PlaceholderName so downstream code can resolve it.
+            # In addition to the existing shorthand `- element_name`
+            # (a plain string reference), also allow the alternative
+            # reference syntax `- use: element_name`.
+            # If the value is not a dict but the key is 'use',
+            # treat it as a reference to an existing element name
+            # and wrap it in a PlaceholderName so downstream code
+            # can resolve it.
             if not isinstance(fields, dict):
                 if name == "use" and isinstance(fields, str):
                     new_list.append(PlaceholderName(fields))
