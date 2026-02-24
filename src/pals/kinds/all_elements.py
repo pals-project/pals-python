@@ -6,7 +6,6 @@ avoiding duplication between BeamLine.line and UnionEle.elements.
 
 from typing import Union
 
-
 from .ACKicker import ACKicker
 from .BeamBeam import BeamBeam
 from .BeginningEle import BeginningEle
@@ -40,7 +39,7 @@ from .Taylor import Taylor
 from .Wiggler import Wiggler
 
 
-def get_all_element_types(extra_types: tuple = None):
+def get_all_element_types(extra_types: tuple | None = None):
     """Return a tuple of all element types that can be used in BeamLine or UnionEle."""
     element_types = (
         "Lattice",  # Forward reference to handle circular import
@@ -82,7 +81,7 @@ def get_all_element_types(extra_types: tuple = None):
     return element_types
 
 
-def get_all_elements_as_annotation(extra_types: tuple = None):
+def get_all_elements_as_annotation(extra_types: tuple | None = None):
     """Return the Union type of all allowed elements with their kind as the discriminator field.
 
     Note: PlaceholderName is included to support string references to named elements.
