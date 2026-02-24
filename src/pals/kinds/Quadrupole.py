@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal, Self
 
 from pydantic import model_validator
 
@@ -13,11 +13,11 @@ class Quadrupole(ThickElement):
     kind: Literal["Quadrupole"] = "Quadrupole"
 
     # Quadrupole-specific parameters
-    MagneticMultipoleP: Optional[MagneticMultipoleParameters] = None
-    ElectricMultipoleP: Optional[ElectricMultipoleParameters] = None
+    MagneticMultipoleP: MagneticMultipoleParameters | None = None
+    ElectricMultipoleP: ElectricMultipoleParameters | None = None
 
     @model_validator(mode="after")
-    def validate_at_least_one_multipole(self) -> "Quadrupole":
+    def validate_at_least_one_multipole(self) -> Self:
         """Ensure at least one multipole parameter is specified."""
         if self.MagneticMultipoleP is None and self.ElectricMultipoleP is None:
             raise ValueError(

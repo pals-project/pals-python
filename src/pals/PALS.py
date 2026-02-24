@@ -1,20 +1,20 @@
 from pydantic import BaseModel
 
 from pydantic import model_validator
-from typing import List, Optional
+from typing import Self
 
 from .kinds import Lattice
 from .kinds.all_elements import get_all_elements_as_annotation
 from .functions import load_file_to_dict, store_dict_to_file
 
 
-Facility = List[get_all_elements_as_annotation()]
+Facility = list[get_all_elements_as_annotation()]
 
 
 class PALSroot(BaseModel):
     """Represent the roo PALS structure"""
 
-    version: Optional[str] = None
+    version: str | None = None
 
     facility: Facility
 
@@ -37,7 +37,7 @@ class PALSroot(BaseModel):
         return data
 
     @staticmethod
-    def from_file(filename: str) -> "PALSroot":
+    def from_file(filename: str) -> Self:
         """Load a facility from a text file"""
         pals_dict = load_file_to_dict(filename)
         return PALSroot(**pals_dict)
