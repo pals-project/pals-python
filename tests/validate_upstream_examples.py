@@ -30,6 +30,8 @@ def main():
     example_file = args.path
     # Parse and validate YAML data from file
     lattice = load(example_file)
+    # The following assertions are based on the upstream PALS example file
+    # fodo.pals.yaml from pals-project/pals/examples
     assert isinstance(lattice.facility[0], Drift)
     assert lattice.facility[0].name == "drift1"
     assert isinstance(lattice.facility[1], Quadrupole)
