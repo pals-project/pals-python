@@ -1,3 +1,13 @@
+"""Utility script to validate upstream PALS example files.
+
+This script is not run by pytest and is intended to be used as a standalone script.
+Run it from the repository root like:
+
+    python tests/validate_upstream_examples.py --path /path/to/example.pals.yaml
+
+Before running, download the desired upstream PALS example files from pals-project/pals/examples.
+"""
+
 import argparse
 
 from pals import load
