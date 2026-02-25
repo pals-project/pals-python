@@ -1,0 +1,45 @@
+name: pals
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.head_ref }}-standard-examples
+  cancel-in-progress: true
+
+permissions:
+    contents: read  # access to check out code and install dependencies
+
+jobs:
+  standard-examples:
+    name: standard examples
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Checkout PALS repository
+        uses: actions/checkout@v6
+        with:
+          repository: pals-project/pals
+          path: pals_temp
+          fetch-depth: 1
+          sparse-checkout: |
+            examples/
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install ".[test]"
+      - name: Run standard examples
+        run: |
+          for file in pals_temp/examples/*.pals.yaml; do
+            python tests/validate_standard_examples.py --path "${file}"
+          done
