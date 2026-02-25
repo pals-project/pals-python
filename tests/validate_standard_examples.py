@@ -1,11 +1,11 @@
-"""Utility script to validate upstream PALS example files.
+"""Utility script to validate standard PALS example files.
 
 This script is not run by pytest and is intended to be used as a standalone script.
 Run it from the repository root like:
 
-    python tests/validate_upstream_examples.py --path /path/to/example.pals.yaml
+    python tests/validate_standard_examples.py --path /path/to/example.pals.yaml
 
-Before running, download the desired upstream PALS example files from pals-project/pals/examples.
+Before running, download the desired standard PALS example files from pals-project/pals/examples.
 """
 
 import argparse
@@ -30,7 +30,7 @@ def main():
     example_file = args.path
     # Parse and validate YAML data from file
     lattice = load(example_file)
-    # The following assertions are based on the upstream PALS example file
+    # The following assertions are based on the standard PALS example file
     # fodo.pals.yaml from pals-project/pals/examples
     assert isinstance(lattice.facility[0], Drift)
     assert lattice.facility[0].name == "drift1"

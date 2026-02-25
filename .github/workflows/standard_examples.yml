@@ -1,4 +1,4 @@
-name: tests
+name: pals
 
 on:
   push:
@@ -7,22 +7,22 @@ on:
   pull_request:
 
 concurrency:
-  group: ${{ github.ref }}-${{ github.head_ref }}-upstream-examples
+  group: ${{ github.ref }}-${{ github.head_ref }}-standard-examples
   cancel-in-progress: true
 
 permissions:
     contents: read  # access to check out code and install dependencies
 
 jobs:
-  upstream-examples:
-    name: upstream examples
+  standard-examples:
+    name: standard examples
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v6
-      - name: Checkout upstream PALS repo
+      - name: Checkout PALS repository
         uses: actions/checkout@v6
         with:
           repository: pals-project/pals
@@ -38,8 +38,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install ".[test]"
-      - name: Run upstream examples
+      - name: Run standard examples
         run: |
           for file in pals_temp/examples/*.pals.yaml; do
-            python tests/validate_upstream_examples.py --path "${file}"
+            python tests/validate_standard_examples.py --path "${file}"
           done
