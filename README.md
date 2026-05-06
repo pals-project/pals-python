@@ -1,6 +1,6 @@
 # Meet Your Python PALS
 
-This is a Python implementation for the Particle Accelerator Lattice Standard ([PALS](https://github.com/campa-consortium/pals)).
+This is a Python implementation for the Particle Accelerator Language Standard ([PALS](https://github.com/campa-consortium/pals)).
 
 To define the PALS schema, [Pydantic](https://docs.pydantic.dev) is used to map to Python objects, perform automatic validation, and serialize/deserialize data classes to/from many modern file formats.
 Various modern file formats (e.g., YAML, JSON, TOML, XML, etc.) are supported, which makes the implementation of the schema-following files in any modern programming language easy (e.g., Python, Julia, C++, LUA, Javascript, etc.).
@@ -9,7 +9,7 @@ Here, we do Python.
 
 ## Status
 
-This project is a work-in-progress and evolves alongside the Particle Accelerator Lattice Standard ([PALS](https://github.com/campa-consortium/pals)).
+This project is a work-in-progress and evolves alongside the Particle Accelerator Language Standard ([PALS](https://github.com/campa-consortium/pals)).
 
 
 ## Approach
