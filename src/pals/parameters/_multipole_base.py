@@ -1,47 +1,18 @@
 """Private shared base class for multipole parameter groups.
 
 Both :class:`MagneticMultipoleParameters` and :class:`ElectricMultipoleParameters`
-allow arbitrary order-indexed extra fields (e.g. ``Bn1``, ``Es3``, ``Kn0L``).
-Because these fields are not declared with a type, Pydantic would otherwise
-store them as-is, preserving non-native numeric inputs like ``numpy.float64``.
-That breaks downstream YAML serialization (PyYAML emits unsafe Python-object
-tags for numpy scalars). See pals-project/pals-python#67.
+allow arbitrary order-indexed extra fields (e.g. ``Bn1``, ``Es3``, ``Kn0L``) and
+share the same name-validation logic. This module centralizes that logic.
 
-This module centralizes the name-validation logic and adds numpy-to-native
-coercion at construction time.
+numpy interoperability (see pals-project/pals-python#67) is handled at the
+serialization boundary in :mod:`pals.functions`, which keeps the fix general:
+any numpy scalar reaching ``yaml.dump`` or ``json.dumps`` is converted to a
+Python-native equivalent regardless of which model produced it.
 """
 
 from typing import Any, ClassVar
 
 from pydantic import BaseModel, ConfigDict, model_validator
-
-
-def _coerce_numpy_value(value: Any) -> Any:
-    """Convert numpy scalars/arrays to Python-native equivalents.
-
-    Recurses through ``list``/``tuple``/``dict`` containers so nested
-    structures are also cleaned. Returns ``value`` unchanged when numpy is
-    not installed or the value is not a numpy type. numpy remains an optional
-    dependency of this project.
-    """
-    try:
-        import numpy as np
-    except ImportError:
-        return value
-
-    if isinstance(value, np.ndarray):
-        if value.ndim == 0:
-            return value.item()
-        return _coerce_numpy_value(value.tolist())
-    if isinstance(value, np.generic):
-        return value.item()
-    if isinstance(value, list):
-        return [_coerce_numpy_value(v) for v in value]
-    if isinstance(value, tuple):
-        return tuple(_coerce_numpy_value(v) for v in value)
-    if isinstance(value, dict):
-        return {k: _coerce_numpy_value(v) for k, v in value.items()}
-    return value
 
 
 def _validate_order(
@@ -72,10 +43,9 @@ class _MultipoleBase(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def _validate_and_coerce(cls, values: dict[str, Any]) -> dict[str, Any]:
-        """Validate parameter names and coerce numpy values to Python natives."""
-        coerced: dict[str, Any] = {}
-        for key, value in values.items():
+    def _validate(cls, values: dict[str, Any]) -> dict[str, Any]:
+        """Validate that all parameter names match the expected multipole format."""
+        for key in values:
             is_length_integrated = key.endswith("L")
             base_key = key[:-1] if is_length_integrated else key
 
@@ -103,6 +73,4 @@ class _MultipoleBase(BaseModel):
                     f"where 'N' is a non-negative integer."
                 )
 
-            coerced[key] = _coerce_numpy_value(value)
-
-        return coerced
+        return values
