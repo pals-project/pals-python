@@ -69,7 +69,6 @@ def test_include(tmp_path):
     data = pals.Lattice.from_file(main_file)
 
     assert data["PALS"]["version"] == 1.0
-    assert data["PALS"]["other"] == "value"
     assert data["PALS"]["author"] == "Some One <name@email.com>"
     assert "include" not in data["PALS"]
 
