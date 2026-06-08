@@ -346,9 +346,11 @@ def _build_numpy_lattice(np):
 
 
 def test_yaml_roundtrip_with_numpy(tmp_path):
-    """Regression test for issue #67: writing YAML with numpy-typed values
-    must not produce !!python/object tags, and round-tripping must yield
-    Python-native floats with the correct numeric values."""
+    """Round-trip numpy-typed values through YAML (regression for issue #67).
+
+    Writing YAML with numpy-typed values must not produce !!python/object tags.
+    Round-tripping must yield Python-native floats with the correct numeric values.
+    """
     np = pytest.importorskip("numpy")
 
     line = _build_numpy_lattice(np)
@@ -377,7 +379,10 @@ def test_yaml_roundtrip_with_numpy(tmp_path):
 
 
 def test_json_roundtrip_with_numpy(tmp_path):
-    """JSON path also needs to handle numpy values cleanly (defense-in-depth)."""
+    """Round-trip numpy-typed values through JSON (companion for issue #67).
+
+    JSON also needs to handle numpy values cleanly (defense-in-depth).
+    """
     np = pytest.importorskip("numpy")
 
     line = _build_numpy_lattice(np)
