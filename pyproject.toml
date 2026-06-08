@@ -41,7 +41,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "numpy"]
 
 [project.urls]
 Documentation = "https://pals-project.readthedocs.io"
