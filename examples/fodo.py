@@ -3,6 +3,7 @@ from pals import Drift
 from pals import Quadrupole
 from pals import BeamLine
 from pals import Lattice
+from pals import load, store
 
 
 def main():
@@ -51,23 +52,23 @@ def main():
 
     # Serialize to YAML
     yaml_file = "examples_fodo.pals.yaml"
-    lattice.to_file(yaml_file)
+    store(yaml_file, lattice)
 
     # Read YAML data from file
-    loaded_lattice = Lattice.from_file(yaml_file)
+    loaded_lattice = load(yaml_file)
 
     # Validate loaded data
-    assert lattice == loaded_lattice
+    assert lattice == loaded_lattice.facility[0]
 
     # Serialize to JSON
     json_file = "examples_fodo.pals.json"
-    lattice.to_file(json_file)
+    store(json_file, lattice)
 
     # Read JSON data from file
-    loaded_lattice = Lattice.from_file(json_file)
+    loaded_lattice = load(json_file)
 
     # Validate loaded data
-    assert lattice == loaded_lattice
+    assert lattice == loaded_lattice.facility[0]
 
 
 if __name__ == "__main__":

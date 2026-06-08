@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pals_schema"
-version = "0.2.0"
+version = "0.4.0.dev"
 dependencies = [
   "pydantic",
   "pyyaml",
   "toml",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
   { name="Axel Huebl", email="axelhuebl@lbl.gov" },
   { name="Edoardo Zoni", email="ezoni@lbl.gov" },
@@ -24,7 +24,7 @@ readme = "README.md"
 license = "BSD-3-Clause-LBNL"
 license-files = ["LICEN[CS]E*"]
 classifiers = [
-  "Development Status :: 5 - Production/Stable",
+  "Development Status :: 3 - Alpha",
   "Framework :: Pydantic :: 2",
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
@@ -41,7 +41,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "numpy"]
 
 [project.urls]
 Documentation = "https://pals-project.readthedocs.io"

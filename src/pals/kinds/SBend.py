@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import ThickElement
 from ..parameters import (
@@ -15,7 +15,7 @@ class SBend(ThickElement):
     kind: Literal["SBend"] = "SBend"
 
     # Bend-specific parameters
-    BendP: Optional[BendParameters] = None
+    BendP: BendParameters | None = None
 
-    ElectricMultipoleP: Optional[ElectricMultipoleParameters] = None
-    MagneticMultipoleP: Optional[MagneticMultipoleParameters] = None
+    ElectricMultipoleP: ElectricMultipoleParameters | None = None
+    MagneticMultipoleP: MagneticMultipoleParameters | None = None

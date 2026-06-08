@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import BaseElement
 from ..parameters import ForkParameters
@@ -13,4 +13,4 @@ class Fork(BaseElement):
     kind: Literal["Fork"] = "Fork"
 
     # Fork-specific parameters
-    ForkP: Optional[ForkParameters] = None
+    ForkP: ForkParameters | None = None

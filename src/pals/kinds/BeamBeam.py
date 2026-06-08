@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from .mixin import BaseElement
 from ..parameters import BeamBeamParameters
@@ -13,4 +13,4 @@ class BeamBeam(BaseElement):
     kind: Literal["BeamBeam"] = "BeamBeam"
 
     # Beam-beam-specific parameters
-    BeamBeamP: Optional[BeamBeamParameters] = None
+    BeamBeamP: BeamBeamParameters | None = None

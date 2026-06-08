@@ -1,9 +1,9 @@
-import os
+import pytest
 
 import pals
 
 
-def test_yaml():
+def test_yaml(tmp_path):
     # Create one base element
     element1 = pals.Marker(name="element1")
     # Create one thick element
@@ -11,17 +11,15 @@ def test_yaml():
     # Create line with both elements
     line = pals.BeamLine(name="line", line=[element1, element2])
     # Serialize the BeamLine object to YAML
-    test_file = "line.pals.yaml"
+    test_file = tmp_path / "line.pals.yaml"
     line.to_file(test_file)
     # Read the YAML data from the test file
     loaded_line = pals.BeamLine.from_file(test_file)
-    # Remove the test file
-    os.remove(test_file)
     # Validate loaded BeamLine object
     assert line == loaded_line
 
 
-def test_json():
+def test_json(tmp_path):
     # Create one base element
     element1 = pals.Marker(name="element1")
     # Create one thick element
@@ -29,17 +27,15 @@ def test_json():
     # Create line with both elements
     line = pals.BeamLine(name="line", line=[element1, element2])
     # Serialize the BeamLine object to JSON
-    test_file = "line.pals.json"
+    test_file = tmp_path / "line.pals.json"
     line.to_file(test_file)
     # Read the JSON data from the test file
     loaded_line = pals.BeamLine.from_file(test_file)
-    # Remove the test file
-    os.remove(test_file)
     # Validate loaded BeamLine object
     assert line == loaded_line
 
 
-def test_comprehensive_lattice():
+def test_comprehensive_lattice(tmp_path):
     """Test a comprehensive lattice using every PALS element at least once"""
 
     # Create elements in alphabetical order for easy maintenance
@@ -214,7 +210,7 @@ def test_comprehensive_lattice():
     )
 
     # Write to temporary file
-    yaml_file = "comprehensive_lattice.pals.yaml"
+    yaml_file = tmp_path / "comprehensive_lattice.pals.yaml"
     lattice.to_file(yaml_file)
 
     # Read back from file
@@ -272,7 +268,7 @@ def test_comprehensive_lattice():
     assert unionele_loaded.elements[1].length == 0.1
 
     # Write to temporary file
-    json_file = "comprehensive_lattice.pals.json"
+    json_file = tmp_path / "comprehensive_lattice.pals.json"
     lattice.to_file(json_file)
 
     # Read back from file
@@ -329,6 +325,73 @@ def test_comprehensive_lattice():
     assert unionele_loaded_json.elements[1].kind == "Drift"
     assert unionele_loaded_json.elements[1].length == 0.1
 
-    # Clean up temporary files
-    os.remove(yaml_file)
-    os.remove(json_file)
+
+def _build_numpy_lattice(np):
+    """Build a small lattice using numpy-typed scalar values throughout."""
+    quad = pals.Quadrupole(
+        name="q_np",
+        length=np.float64(0.061),
+        MagneticMultipoleP=pals.MagneticMultipoleParameters(
+            Bn1=np.float64(-26.0), Bs1=np.float32(0.5), Kn0=np.int64(-1)
+        ),
+    )
+    oct_ = pals.Octupole(
+        name="o_np",
+        length=np.float64(0.25),
+        ElectricMultipoleP=pals.ElectricMultipoleParameters(
+            En3=np.float64(0.75), Es3=np.float32(0.125)
+        ),
+    )
+    return pals.BeamLine(name="line_np", line=[quad, oct_])
+
+
+def test_yaml_roundtrip_with_numpy(tmp_path):
+    """Round-trip numpy-typed values through YAML (regression for issue #67).
+
+    Writing YAML with numpy-typed values must not produce !!python/object tags.
+    Round-tripping must yield Python-native floats with the correct numeric values.
+    """
+    np = pytest.importorskip("numpy")
+
+    line = _build_numpy_lattice(np)
+    yaml_file = tmp_path / "numpy_roundtrip.pals.yaml"
+    line.to_file(yaml_file)
+
+    with open(yaml_file, "r") as f:
+        text = f.read()
+
+    # The bug symptom: YAML contains opaque numpy object tags.
+    assert "!!python/object" not in text, (
+        f"YAML output still contains unsafe numpy object tags:\n{text}"
+    )
+    assert "numpy" not in text, f"YAML output still references numpy:\n{text}"
+
+    loaded = pals.BeamLine.from_file(yaml_file)
+    loaded_quad = loaded.line[0]
+    assert loaded_quad.MagneticMultipoleP.Bn1 == -26.0
+    assert type(loaded_quad.MagneticMultipoleP.Bn1) is float
+    assert loaded_quad.MagneticMultipoleP.Bs1 == 0.5
+    assert loaded_quad.MagneticMultipoleP.Kn0 == -1
+
+    loaded_oct = loaded.line[1]
+    assert loaded_oct.ElectricMultipoleP.En3 == 0.75
+    assert type(loaded_oct.ElectricMultipoleP.En3) is float
+
+
+def test_json_roundtrip_with_numpy(tmp_path):
+    """Round-trip numpy-typed values through JSON (companion for issue #67).
+
+    JSON also needs to handle numpy values cleanly (defense-in-depth).
+    """
+    np = pytest.importorskip("numpy")
+
+    line = _build_numpy_lattice(np)
+    json_file = tmp_path / "numpy_roundtrip.pals.json"
+    line.to_file(json_file)
+
+    loaded = pals.BeamLine.from_file(json_file)
+    loaded_quad = loaded.line[0]
+    assert loaded_quad.MagneticMultipoleP.Bn1 == -26.0
+    assert type(loaded_quad.MagneticMultipoleP.Bn1) is float
+    loaded_oct = loaded.line[1]
+    assert loaded_oct.ElectricMultipoleP.En3 == 0.75
