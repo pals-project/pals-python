@@ -355,54 +355,48 @@ def _build_numpy_lattice(np):
     return pals.BeamLine(name="line_np", line=[quad, oct_])
 
 
-def test_yaml_roundtrip_with_numpy():
+def test_yaml_roundtrip_with_numpy(tmp_path):
     """Regression test for issue #67: writing YAML with numpy-typed values
     must not produce !!python/object tags, and round-tripping must yield
     Python-native floats with the correct numeric values."""
     np = pytest.importorskip("numpy")
 
     line = _build_numpy_lattice(np)
-    yaml_file = "numpy_roundtrip.pals.yaml"
+    yaml_file = tmp_path / "numpy_roundtrip.pals.yaml"
     line.to_file(yaml_file)
-    try:
-        with open(yaml_file, "r") as f:
-            text = f.read()
 
-        # The bug symptom: YAML contains opaque numpy object tags.
-        assert "!!python/object" not in text, (
-            f"YAML output still contains unsafe numpy object tags:\n{text}"
-        )
-        assert "numpy" not in text, f"YAML output still references numpy:\n{text}"
+    with open(yaml_file, "r") as f:
+        text = f.read()
 
-        loaded = pals.BeamLine.from_file(yaml_file)
-        loaded_quad = loaded.line[0]
-        assert loaded_quad.MagneticMultipoleP.Bn1 == -26.0
-        assert type(loaded_quad.MagneticMultipoleP.Bn1) is float
-        assert loaded_quad.MagneticMultipoleP.Bs1 == 0.5
-        assert loaded_quad.MagneticMultipoleP.Kn0 == -1
+    # The bug symptom: YAML contains opaque numpy object tags.
+    assert "!!python/object" not in text, (
+        f"YAML output still contains unsafe numpy object tags:\n{text}"
+    )
+    assert "numpy" not in text, f"YAML output still references numpy:\n{text}"
 
-        loaded_oct = loaded.line[1]
-        assert loaded_oct.ElectricMultipoleP.En3 == 0.75
-        assert type(loaded_oct.ElectricMultipoleP.En3) is float
-    finally:
-        if os.path.exists(yaml_file):
-            os.remove(yaml_file)
+    loaded = pals.BeamLine.from_file(yaml_file)
+    loaded_quad = loaded.line[0]
+    assert loaded_quad.MagneticMultipoleP.Bn1 == -26.0
+    assert type(loaded_quad.MagneticMultipoleP.Bn1) is float
+    assert loaded_quad.MagneticMultipoleP.Bs1 == 0.5
+    assert loaded_quad.MagneticMultipoleP.Kn0 == -1
+
+    loaded_oct = loaded.line[1]
+    assert loaded_oct.ElectricMultipoleP.En3 == 0.75
+    assert type(loaded_oct.ElectricMultipoleP.En3) is float
 
 
-def test_json_roundtrip_with_numpy():
+def test_json_roundtrip_with_numpy(tmp_path):
     """JSON path also needs to handle numpy values cleanly (defense-in-depth)."""
     np = pytest.importorskip("numpy")
 
     line = _build_numpy_lattice(np)
-    json_file = "numpy_roundtrip.pals.json"
+    json_file = tmp_path / "numpy_roundtrip.pals.json"
     line.to_file(json_file)
-    try:
-        loaded = pals.BeamLine.from_file(json_file)
-        loaded_quad = loaded.line[0]
-        assert loaded_quad.MagneticMultipoleP.Bn1 == -26.0
-        assert type(loaded_quad.MagneticMultipoleP.Bn1) is float
-        loaded_oct = loaded.line[1]
-        assert loaded_oct.ElectricMultipoleP.En3 == 0.75
-    finally:
-        if os.path.exists(json_file):
-            os.remove(json_file)
+
+    loaded = pals.BeamLine.from_file(json_file)
+    loaded_quad = loaded.line[0]
+    assert loaded_quad.MagneticMultipoleP.Bn1 == -26.0
+    assert type(loaded_quad.MagneticMultipoleP.Bn1) is float
+    loaded_oct = loaded.line[1]
+    assert loaded_oct.ElectricMultipoleP.En3 == 0.75
