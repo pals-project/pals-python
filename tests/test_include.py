@@ -66,11 +66,16 @@ def test_include(tmp_path):
     facility_included_file.write_text(facility_included_content)
     facility_nested_file.write_text(facility_nested_content)
 
-    data = pals.Lattice.from_file(main_file)
+    lattice = pals.Lattice.from_file(main_file)
 
-    assert data["PALS"]["version"] == 1.0
-    assert data["PALS"]["author"] == "Some One <name@email.com>"
-    assert "include" not in data["PALS"]
+    assert lattice.name == "fodo_lattice"
+    assert lattice.branches[0] == "fodo_cell"
+
+    data = pals.PALSroot.from_file(main_file)
+
+    assert data.version == 1.0
+    assert data.author == "Some One <name@email.com>"
+    assert not hasattr(data, "include")
 
 
 def test_nested_include(tmp_path):
