@@ -32,6 +32,28 @@ class Lattice(BaseElement):
     def from_file(filename: str) -> Self:
         """Load a Lattice from a text file"""
         pals_dict = load_file_to_dict(filename)
+
+        if isinstance(pals_dict, dict) and "PALS" in pals_dict:
+            # Full PALS documents select their active lattice with a facility-level use.
+            from pals.PALS import PALSroot
+            from pals.kinds.PlaceholderName import PlaceholderName
+
+            pals_root = PALSroot(**pals_dict)
+            use_name = None
+            for item in pals_root.facility:
+                if isinstance(item, PlaceholderName):
+                    use_name = item.name
+
+            if use_name is None:
+                raise ValueError("PALS root document does not specify a lattice to use")
+
+            # Return the selected lattice while preserving the existing direct-lattice path.
+            for item in pals_root.facility:
+                if isinstance(item, Lattice) and item.name == use_name:
+                    return item
+
+            raise ValueError(f"PALS root document does not define lattice {use_name!r}")
+
         return Lattice(**pals_dict)
 
     def to_file(self, filename: str):

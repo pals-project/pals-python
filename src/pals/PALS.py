@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from pydantic import model_validator
 from typing import Self
@@ -14,7 +14,10 @@ Facility = list[get_all_elements_as_annotation()]
 class PALSroot(BaseModel):
     """Represent the roo PALS structure"""
 
-    version: str | None = None
+    # Preserve root-level standard metadata that is not modeled explicitly yet.
+    model_config = ConfigDict(extra="allow")
+
+    version: str | int | float | None = None
 
     facility: Facility
 
