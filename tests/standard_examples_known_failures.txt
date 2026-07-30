@@ -5,7 +5,7 @@
 # `#` comments are ignored.
 
 # PALSroot models only `version` and `facility`, and `facility` is required:
-# the minimal load-family documents (notes, extension labels, or a version
+# additional attributes (notes, extension labels, or a version
 # only) are rejected.
 unit_tests/loading/basic/joiner.pals.yaml
 unit_tests/loading/diamond/joiner.pals.yaml
