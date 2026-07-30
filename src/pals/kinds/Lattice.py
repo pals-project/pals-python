@@ -45,19 +45,29 @@ class Lattice(BaseElement):
             pals_root = PALSroot(**pals_dict)
             facility = pals_root.facility or []
             lattices = [item for item in facility if isinstance(item, Lattice)]
+            by_name = {lattice.name: lattice for lattice in lattices}
+
+            # A `use` entry overrides the last-lattice default; with several,
+            # the last one wins. It must name a Lattice the document defines.
+            use_entries = [
+                item
+                for item in facility
+                if isinstance(item, PlaceholderName) and item.is_use
+            ]
+            if use_entries:
+                selected = use_entries[-1].name
+                if selected not in by_name:
+                    raise ValueError(
+                        f"PALS root document {filename!r} selects {selected!r} "
+                        f"with its use entry, but defines no Lattice of that "
+                        f"name; defined Lattices: {sorted(by_name)}"
+                    )
+                return by_name[selected]
+
             if not lattices:
                 raise ValueError(
                     f"PALS root document {filename!r} does not define a Lattice"
                 )
-            by_name = {lattice.name: lattice for lattice in lattices}
-
-            # `use` entries are stored as name references; the last one naming
-            # a defined Lattice wins. References to non-Lattice elements
-            # (e.g. facility-level commands) do not select anything.
-            for item in reversed(facility):
-                if isinstance(item, PlaceholderName) and item.name in by_name:
-                    return by_name[item.name]
-
             return lattices[-1]
 
         return Lattice(**pals_dict)

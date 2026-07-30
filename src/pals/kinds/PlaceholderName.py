@@ -41,14 +41,21 @@ class PlaceholderName(BaseModel):
         "BaseElement | None",
         Field(default=None, description="Reference to the resolved element object"),
     ] = None
+    is_use: bool = Field(
+        default=False,
+        description="True when this reference was written as a `use:` entry",
+    )
 
     @model_serializer(mode="plain")
-    def _serialize_as_name(self) -> str:
-        """Serialize this reference as just its name.
+    def _serialize_as_name(self) -> str | dict[str, str]:
+        """Serialize this reference as its name, or its `use:` entry form.
 
         This makes `model_dump()` return a string (the element name), so nested
         serialization (e.g. inside BeamLine.line) produces plain strings too.
+        References written as `use:` entries keep that form.
         """
+        if self.is_use:
+            return {"use": self.name}
         return self.name
 
     def __init__(self, name: str | None = None, /, **data):

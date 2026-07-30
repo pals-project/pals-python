@@ -1,0 +1,9 @@
+# Information outside the PALS root node is outside the standard and is
+# ignored: the top-level include names a file that does not exist and must
+# not be resolved. The include inside the PALS node is.
+include: "missing.subpals.yaml"
+not_pals_data: true
+PALS:
+  include: "globals.subpals.yaml"
+  notes:
+    - "the PALS node itself"

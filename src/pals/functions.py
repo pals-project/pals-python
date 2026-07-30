@@ -113,7 +113,8 @@ def load_file_to_dict(
     filename: str, sub_level: bool = False, _include_chain: tuple = ()
 ) -> dict:
     # Guard against include cycles: a file including itself through any chain.
-    filepath = os.path.abspath(filename)
+    # realpath canonicalizes symlinks so a cycle cannot hide behind one.
+    filepath = os.path.realpath(filename)
     if filepath in _include_chain:
         chain = " -> ".join(_include_chain + (filepath,))
         raise RuntimeError(f"load_file_to_dict: circular include: {chain}")
@@ -143,12 +144,16 @@ def load_file_to_dict(
                 f"load_file_to_dict: No support for PALS file {filename} with extension {extension} yet."
             )
 
-    # Resolve include entries, tracking this file for cycle detection
-    pals_data = process_includes(
-        pals_data,
-        base_dir=os.path.dirname(filename),
-        include_chain=_include_chain + (filepath,),
-    )
+    # Resolve include entries, tracking this file for cycle detection. In a
+    # full document, include statements must be within the PALS root node;
+    # information outside of it is outside the standard and is not touched.
+    base_dir = os.path.dirname(filename)
+    include_chain = _include_chain + (filepath,)
+    if isinstance(pals_data, dict) and "PALS" in pals_data:
+        pals_data = dict(pals_data)
+        pals_data["PALS"] = process_includes(pals_data["PALS"], base_dir, include_chain)
+    else:
+        pals_data = process_includes(pals_data, base_dir, include_chain)
 
     return pals_data
 

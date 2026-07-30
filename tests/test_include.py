@@ -74,10 +74,37 @@ def test_include_structure_mismatch():
         pals.functions.load_file_to_dict(str(INCLUDE / "mismatch/q01.pals.yaml"))
 
 
+def test_include_outside_pals_node():
+    """Include statements must be within the PALS root node; the top-level
+    sibling include naming a missing file is outside the standard and is
+    left untouched."""
+    data = pals.functions.load_file_to_dict(str(INCLUDE / "outside/main.pals.yaml"))
+    assert data["include"] == "missing.subpals.yaml"
+    assert data["PALS"]["version"] == "1.0"
+
+    root = pals.load(str(INCLUDE / "outside/main.pals.yaml"))
+    assert root.version == "1.0"
+    assert root.notes == ["the PALS node itself"]
+
+
 def test_circular_include():
     """An include cycle is reported instead of recursing forever."""
     with pytest.raises(RuntimeError, match="circular include"):
         pals.functions.load_file_to_dict(str(INCLUDE / "circular/a.pals.yaml"))
+
+
+def test_symlinked_circular_include(tmp_path):
+    """A cycle routed through a directory symlink is still detected."""
+    link = tmp_path / "link"
+    try:
+        link.symlink_to(tmp_path, target_is_directory=True)
+    except OSError:
+        pytest.skip("platform cannot create symlinks")
+    root_file = tmp_path / "root.pals.yaml"
+    root_file.write_text('PALS:\n  include: "link/root.pals.yaml"\n')
+
+    with pytest.raises(RuntimeError, match="circular include"):
+        pals.functions.load_file_to_dict(str(root_file))
 
 
 def test_lattice_from_full_document_use():
@@ -91,3 +118,8 @@ def test_lattice_from_full_document_use():
 
     with pytest.raises(ValueError, match="does not define a Lattice"):
         pals.Lattice.from_file(str(LATTICE_USE / "no_lattice.pals.yaml"))
+
+    # A use entry that names no defined Lattice errors instead of silently
+    # falling back to the last lattice.
+    with pytest.raises(ValueError, match="no Lattice of that name"):
+        pals.Lattice.from_file(str(LATTICE_USE / "bad_use.pals.yaml"))

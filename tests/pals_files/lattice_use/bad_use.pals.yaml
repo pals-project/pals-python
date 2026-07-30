@@ -1,0 +1,18 @@
+# A use entry naming no defined Lattice: since use overrides the default
+# lattice selection, this is an error, not a fallback to the last lattice.
+PALS:
+  facility:
+    - line1:
+        kind: BeamLine
+        line:
+          - m1:
+              kind: Marker
+    - lat1:
+        kind: Lattice
+        branches:
+          - line1
+    - lat2:
+        kind: Lattice
+        branches:
+          - line1
+    - use: "typo"
