@@ -30,29 +30,35 @@ class Lattice(BaseElement):
 
     @staticmethod
     def from_file(filename: str) -> Self:
-        """Load a Lattice from a text file"""
+        """Load a Lattice from a text file.
+
+        The file can hold either a single Lattice or a full PALS document.
+        Per the standard's use statement, the lattice instantiated from a full
+        document is the last one defined, unless a `use` entry selects another.
+        """
         pals_dict = load_file_to_dict(filename)
 
         if isinstance(pals_dict, dict) and "PALS" in pals_dict:
-            # Full PALS documents select their active lattice with a facility-level use.
             from pals.PALS import PALSroot
             from pals.kinds.PlaceholderName import PlaceholderName
 
             pals_root = PALSroot(**pals_dict)
-            use_name = None
-            for item in pals_root.facility:
-                if isinstance(item, PlaceholderName):
-                    use_name = item.name
+            facility = pals_root.facility or []
+            lattices = [item for item in facility if isinstance(item, Lattice)]
+            if not lattices:
+                raise ValueError(
+                    f"PALS root document {filename!r} does not define a Lattice"
+                )
+            by_name = {lattice.name: lattice for lattice in lattices}
 
-            if use_name is None:
-                raise ValueError("PALS root document does not specify a lattice to use")
+            # `use` entries are stored as name references; the last one naming
+            # a defined Lattice wins. References to non-Lattice elements
+            # (e.g. facility-level commands) do not select anything.
+            for item in reversed(facility):
+                if isinstance(item, PlaceholderName) and item.name in by_name:
+                    return by_name[item.name]
 
-            # Return the selected lattice while preserving the existing direct-lattice path.
-            for item in pals_root.facility:
-                if isinstance(item, Lattice) and item.name == use_name:
-                    return item
-
-            raise ValueError(f"PALS root document does not define lattice {use_name!r}")
+            return lattices[-1]
 
         return Lattice(**pals_dict)
 
