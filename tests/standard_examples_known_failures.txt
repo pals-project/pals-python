@@ -4,34 +4,6 @@
 # to load as an error, so this list shrinks as support lands. Blank lines and
 # `#` comments are ignored.
 
-# PALSroot models only `version` and `facility`, and `facility` is required:
-# additional attributes (notes, extension labels, or a version
-# only) are rejected.
-unit_tests/loading/basic/joiner.pals.yaml
-unit_tests/loading/diamond/joiner.pals.yaml
-unit_tests/loading/diamond/left.pals.yaml
-unit_tests/loading/diamond/right.pals.yaml
-unit_tests/loading/diamond/shared.pals.yaml
-unit_tests/loading/extension_labels/a.pals.yaml
-unit_tests/loading/extension_labels/joiner.pals.yaml
-unit_tests/loading/implicit_self/a.pals.yaml
-unit_tests/loading/implicit_self/joiner.pals.yaml
-unit_tests/loading/nested/a.pals.yaml
-unit_tests/loading/nested/inner.pals.yaml
-unit_tests/loading/nested/joiner.pals.yaml
-unit_tests/loading/relative_paths/joiner.pals.yaml
-unit_tests/loading/relative_paths/sub/inner.pals.yaml
-unit_tests/loading/relative_paths/top.pals.yaml
-unit_tests/loading/self_position/a.pals.yaml
-unit_tests/loading/self_position/b.pals.yaml
-unit_tests/loading/self_position/joiner.pals.yaml
-unit_tests/loading/version_match/a.pals.yaml
-unit_tests/loading/version_match/joiner.pals.yaml
-
-# An integer `version` (root_keys writes `version: 1`) is rejected; the model
-# wants a string or null.
-unit_tests/document/root_keys.pals.yaml
-
 # `include` entries inside a facility are not resolved.
 machine/machine.pals.yaml
 unit_tests/loading/include/sub/layout.pals.yaml

@@ -6,7 +6,7 @@ simpler import statements like `from pals import Drift`.
 
 from .kinds import *  # noqa
 from .parameters import *  # noqa
-from .PALS import PALSroot, load, store  # noqa
+from .PALS import Author, ExtensionLabels, PALSroot, load, store  # noqa
 
 
 # Rebuild pydantic models that depend on other classes
