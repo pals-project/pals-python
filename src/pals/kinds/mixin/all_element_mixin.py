@@ -8,41 +8,22 @@ from . import BaseElement
 from ..PlaceholderName import PlaceholderName
 
 
-def unpack_element_list_structure(
-    data: dict, field_name: str, container_type: str
-) -> dict:
-    """Deserialize the JSON/YAML/...-like dict for element lists.
+def unpack_element_items(items: list, container_type: str) -> list:
+    """Deserialize the JSON/YAML/...-like items of an element list.
 
-    This handles both the top-level unpacking and the field-level unpacking
-    for elements that contain lists of other elements.
+    Each item can be a reference string, a `use:` reference, a one-key dict
+    holding the element's name, or an already-built element instance.
 
     Args:
-        data: The input data dictionary
-        field_name: Name of the field containing the element list (e.g., "line" or "elements")
+        items: The list of raw element entries
         container_type: Type of container for error messages (e.g., "line" or "union")
 
     Returns:
-        Modified data dictionary with unpacked structure
+        A new list with each entry unpacked to a dict, PlaceholderName, or element
     """
-    # Handle the top-level one-key dict: unpack the container's name
-    if isinstance(data, dict) and len(data) == 1:
-        name, value = list(data.items())[0]
-        if not isinstance(value, dict):
-            raise TypeError(
-                f"Value for {container_type} key {name!r} must be a dict, but we got {value!r}"
-            )
-        value["name"] = name
-        data = value
-
-    # Handle the field: unpack each element's name
-    if field_name not in data:
-        raise ValueError(f"'{field_name}' field is missing")
-    if not isinstance(data[field_name], list):
-        raise TypeError(f"'{field_name}' must be a list")
-
     new_list = []
     # Loop over all elements in the list
-    for item in data[field_name]:
+    for item in items:
         # An element can be a string that refers to another element
         if isinstance(item, str):
             # Wrap the string in a Placeholder name object
@@ -90,7 +71,42 @@ def unpack_element_list_structure(
                 f"Value must be a reference string, PlaceholderName, or a dict, but we got {item!r}"
             )
 
-    data[field_name] = new_list
+    return new_list
+
+
+def unpack_element_list_structure(
+    data: dict, field_name: str, container_type: str
+) -> dict:
+    """Deserialize the JSON/YAML/...-like dict for element lists.
+
+    This handles both the top-level unpacking and the field-level unpacking
+    for elements that contain lists of other elements.
+
+    Args:
+        data: The input data dictionary
+        field_name: Name of the field containing the element list (e.g., "line" or "elements")
+        container_type: Type of container for error messages (e.g., "line" or "union")
+
+    Returns:
+        Modified data dictionary with unpacked structure
+    """
+    # Handle the top-level one-key dict: unpack the container's name
+    if isinstance(data, dict) and len(data) == 1:
+        name, value = list(data.items())[0]
+        if not isinstance(value, dict):
+            raise TypeError(
+                f"Value for {container_type} key {name!r} must be a dict, but we got {value!r}"
+            )
+        value["name"] = name
+        data = value
+
+    # Handle the field: unpack each element's name
+    if field_name not in data:
+        raise ValueError(f"'{field_name}' field is missing")
+    if not isinstance(data[field_name], list):
+        raise TypeError(f"'{field_name}' must be a list")
+
+    data[field_name] = unpack_element_items(data[field_name], container_type)
     return data
 
 

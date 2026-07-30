@@ -21,17 +21,25 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+      # The standard is validated at a pinned commit (bumped by the
+      # weekly_update workflow), so changes to it cannot break unrelated PRs.
+      - name: Read the pinned PALS standard commit
+        id: pin
+        run: |
+          sha=$(grep -vE '^[[:space:]]*(#|$)' tests/standard_examples_git_reference.txt | head -n1)
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
       - name: Checkout PALS repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: pals-project/pals
+          ref: ${{ steps.pin.outputs.sha }}
           path: pals_temp
           fetch-depth: 1
           sparse-checkout: |
             examples/
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install
@@ -40,6 +48,6 @@ jobs:
           pip install ".[test]"
       - name: Run standard examples
         run: |
-          for file in pals_temp/examples/*.pals.yaml; do
-            python tests/validate_standard_examples.py --path "${file}"
-          done
+          python tests/validate_standard_examples.py \
+            --root pals_temp/examples \
+            --known-failures tests/standard_examples_known_failures.txt

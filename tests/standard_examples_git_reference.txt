@@ -1,0 +1,10 @@
+# The commit of pals-project/pals that the standard_examples workflow checks
+# out and validates the examples corpus from. Pinning a fixed commit keeps
+# changes to the standard from breaking unrelated pals-python PRs; the
+# weekly_update workflow bumps this pin to the current main in a PR of its
+# own, so a breaking change in the standard surfaces there, reviewed and
+# controlled.
+#
+# The first non-comment line is the pin: a full commit SHA of
+# https://github.com/pals-project/pals
+5c39fde043ddad7a961ede01a5ad73d90b098aec
