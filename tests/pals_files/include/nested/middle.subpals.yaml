@@ -1,0 +1,5 @@
+# Included by root.pals.yaml; includes leaf.subpals.yaml itself. Its own
+# `shared` entry wins over the one from the leaf.
+middle: val
+shared: local
+include: "leaf.subpals.yaml"

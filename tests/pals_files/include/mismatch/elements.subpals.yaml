@@ -1,0 +1,3 @@
+# A sequence, included by q01.pals.yaml at a mapping level: an error.
+- a:
+    kind: Drift

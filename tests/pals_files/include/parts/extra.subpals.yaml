@@ -1,0 +1,6 @@
+# Spliced into sub/quads.subpals.yaml by its include entry.
+- quad2:
+    kind: Quadrupole
+    MagneticMultipoleP:
+      Bn1: -1.0
+    length: 1.0

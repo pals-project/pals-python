@@ -1,0 +1,4 @@
+# Structural error: includes a file holding a sequence at a mapping level.
+Q01:
+  kind: Quadrupole
+  include: "elements.subpals.yaml"
