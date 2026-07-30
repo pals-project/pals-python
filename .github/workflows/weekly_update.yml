@@ -1,6 +1,7 @@
 name: Weekly update
 
-# Bumps the pinned pals-project/pals commit (tests/pals_standard_ref.txt) that
+# Bumps the pinned pals-project/pals commit
+# (tests/standard_examples_git_reference.txt) that
 # the standard_examples workflow validates against, as a PR. A change to the
 # standard that breaks the examples validation therefore shows up in that PR,
 # not in unrelated ones.
@@ -33,9 +34,9 @@ jobs:
       - name: Update the pinned PALS standard commit
         id: bump
         run: |
-          old=$(grep -vE '^[[:space:]]*(#|$)' tests/pals_standard_ref.txt | head -n1)
+          old=$(grep -vE '^[[:space:]]*(#|$)' tests/standard_examples_git_reference.txt | head -n1)
           new=$(git ls-remote https://github.com/pals-project/pals.git refs/heads/main | cut -f1)
-          sed -i "s/^${old}\$/${new}/" tests/pals_standard_ref.txt
+          sed -i "s/^${old}\$/${new}/" tests/standard_examples_git_reference.txt
           echo "old=${old}" >> "$GITHUB_OUTPUT"
           echo "new=${new}" >> "$GITHUB_OUTPUT"
       - name: Commit changes

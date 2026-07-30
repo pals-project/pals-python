@@ -27,7 +27,7 @@ jobs:
       - name: Read the pinned PALS standard commit
         id: pin
         run: |
-          sha=$(grep -vE '^[[:space:]]*(#|$)' tests/pals_standard_ref.txt | head -n1)
+          sha=$(grep -vE '^[[:space:]]*(#|$)' tests/standard_examples_git_reference.txt | head -n1)
           echo "sha=${sha}" >> "$GITHUB_OUTPUT"
       - name: Checkout PALS repository
         uses: actions/checkout@v7

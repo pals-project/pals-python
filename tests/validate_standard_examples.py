@@ -12,7 +12,7 @@ shrinks as support lands.
 
 This script is not run by pytest; the standard_examples workflow runs it
 against a checkout of the standard, pinned to the commit named in
-tests/pals_standard_ref.txt. Run it locally, from the repository root:
+tests/standard_examples_git_reference.txt. Run it locally, from the repository root:
 
     python tests/validate_standard_examples.py \
         --root /path/to/pals/examples \
