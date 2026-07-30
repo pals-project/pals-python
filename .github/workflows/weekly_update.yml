@@ -1,0 +1,71 @@
+name: Weekly update
+
+# Bumps the pinned pals-project/pals commit (tests/pals_standard_ref.txt) that
+# the standard_examples workflow validates against, as a PR. A change to the
+# standard that breaks the examples validation therefore shows up in that PR,
+# not in unrelated ones.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"  # every Monday at 1:00am PST (9:00am UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  autoupdate:
+    name: Autoupdate
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Checkout branch
+        run: |
+          git checkout weekly_update || git checkout -b weekly_update
+      - name: Update the pinned PALS standard commit
+        id: bump
+        run: |
+          old=$(grep -vE '^[[:space:]]*(#|$)' tests/pals_standard_ref.txt | head -n1)
+          new=$(git ls-remote https://github.com/pals-project/pals.git refs/heads/main | cut -f1)
+          sed -i "s/^${old}\$/${new}/" tests/pals_standard_ref.txt
+          echo "old=${old}" >> "$GITHUB_OUTPUT"
+          echo "new=${new}" >> "$GITHUB_OUTPUT"
+      - name: Commit changes
+        id: commit
+        run: |
+          if git diff --quiet; then
+            echo "The pin already matches pals main; nothing to update."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git add -u
+            git commit -m "Update the pinned PALS standard commit"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Push changes
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          git push -f origin weekly_update
+      - name: Open pull request
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          if [ -n "$(gh pr list --head weekly_update --state open --json number --jq '.[].number')" ]; then
+            echo "An open weekly_update PR already exists; the push updated it."
+            exit 0
+          fi
+          gh pr create \
+            --base main \
+            --title "PALS standard: weekly update of the pinned commit" \
+            --body "Bump the pinned pals-project/pals commit from \
+          pals-project/pals@${{ steps.bump.outputs.old }} to \
+          pals-project/pals@${{ steps.bump.outputs.new }} \
+          (https://github.com/pals-project/pals/compare/${{ steps.bump.outputs.old }}...${{ steps.bump.outputs.new }}).
+
+          Automated via .github/workflows/weekly_update.yml."
