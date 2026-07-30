@@ -74,6 +74,7 @@ def main():
     root = pathlib.Path(args.root)
     known = read_known_failures(args.known_failures)
 
+    # Track every unexpected result for the final exit status.
     failures = 0
     seen = set()
     files = sorted(root.rglob("*.pals.yaml"))
@@ -81,6 +82,7 @@ def main():
         rel = path.relative_to(root).as_posix()
         seen.add(rel)
         error = None
+        # Capture load errors so expected failures can be distinguished.
         try:
             lattice = pals.load(str(path))
             if rel == "fodo.pals.yaml":
@@ -103,8 +105,7 @@ def main():
                 print(f"       {detail}")
             failures += 1
 
-    # A listed file that no longer exists means the corpus moved on and the
-    # list still describes it.
+    # Flag stale entries in the known-failures list.
     for rel in sorted(known - seen):
         print(f"FAIL   {rel}")
         print("       in the known-failures list, but not found under --root")
