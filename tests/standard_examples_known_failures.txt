@@ -4,10 +4,6 @@
 # to load as an error, so this list shrinks as support lands. Blank lines and
 # `#` comments are ignored.
 
-# `include` entries inside a facility are not resolved.
-machine/machine.pals.yaml
-unit_tests/loading/include/sub/layout.pals.yaml
-
 # The sequence form of `variables` and the compact `sets` form are not
 # modeled.
 unit_tests/expressions/inline_expressions.pals.yaml

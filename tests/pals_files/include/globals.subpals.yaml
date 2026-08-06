@@ -1,0 +1,6 @@
+# Included at the root level of main.pals.yaml: version and notes per the
+# standard's example, plus an unmodeled key that must be preserved.
+version: 1.0
+notes:
+  - "included note"
+my_extension_data: "kept"

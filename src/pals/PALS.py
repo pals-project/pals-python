@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from pydantic import model_validator
 from typing import Self
@@ -40,9 +40,12 @@ class ExtensionLabels(BaseModel, extra="forbid"):
 class PALSroot(BaseModel):
     """Represent the root PALS structure"""
 
+    # Preserve root-level standard metadata that is not modeled explicitly yet.
+    model_config = ConfigDict(extra="allow")
+
     # The standard documents `version` as a string, but the standard's own
-    # examples also write bare numbers (e.g. `version: 1`).
-    version: str | int | None = None
+    # examples also write bare numbers (e.g. `version: 1` or `version: 1.0`).
+    version: str | int | float | None = None
 
     authors: list[Author] | None = None
 

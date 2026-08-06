@@ -1,0 +1,5 @@
+# A chain of includes: this file includes middle.subpals.yaml, which
+# includes leaf.subpals.yaml. Keys local to an including file win over
+# included ones.
+root:
+  include: "middle.subpals.yaml"

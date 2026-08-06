@@ -1,0 +1,5 @@
+# The standard's element-level include example: the element pulls a
+# parameter group in from include-Q-params.subpals.yaml.
+Q01:
+  kind: Quadrupole
+  include: "include-Q-params.subpals.yaml"

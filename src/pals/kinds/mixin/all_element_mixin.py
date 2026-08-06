@@ -51,7 +51,7 @@ def unpack_element_items(items: list, container_type: str) -> list:
             # can resolve it.
             if not isinstance(fields, dict):
                 if name == "use" and isinstance(fields, str):
-                    new_list.append(PlaceholderName(fields))
+                    new_list.append(PlaceholderName(fields, is_use=True))
                     continue
                 raise TypeError(
                     f"Value for element key {name!r} must be a dict (the element's properties), "

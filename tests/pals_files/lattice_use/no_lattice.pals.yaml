@@ -1,0 +1,4 @@
+# A document defining no Lattice: Lattice.from_file reports an error.
+PALS:
+  notes:
+    - "no facility here"

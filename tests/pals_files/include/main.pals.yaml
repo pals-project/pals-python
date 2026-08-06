@@ -1,0 +1,28 @@
+# A FODO document assembled with includes: a root-level include contributes
+# document metadata (globals.subpals.yaml) and a facility-level include
+# splices in element definitions (sub/quads.subpals.yaml, which itself
+# includes parts/extra.subpals.yaml relative to its own directory).
+PALS:
+  include: "globals.subpals.yaml"
+  facility:
+    - drift1:
+        kind: Drift
+        length: 0.25
+
+    - include: "sub/quads.subpals.yaml"
+
+    - fodo_cell:
+        kind: BeamLine
+        line:
+          - drift1
+          - quad1
+          - drift2
+          - quad2
+          - drift1
+
+    - fodo_lattice:
+        kind: Lattice
+        branches:
+          - fodo_cell
+
+    - use: fodo_lattice

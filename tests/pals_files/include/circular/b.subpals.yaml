@@ -1,0 +1,2 @@
+# Includes a.pals.yaml, closing the include cycle.
+include: "a.pals.yaml"

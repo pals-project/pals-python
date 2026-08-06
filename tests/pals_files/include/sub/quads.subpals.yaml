@@ -1,0 +1,13 @@
+# Spliced into the facility of main.pals.yaml; includes a further file
+# relative to its own directory (not the directory of the main file).
+- quad1:
+    kind: Quadrupole
+    MagneticMultipoleP:
+      Bn1: 1.0
+    length: 1.0
+
+- drift2:
+    kind: Drift
+    length: 0.5
+
+- include: "../parts/extra.subpals.yaml"
