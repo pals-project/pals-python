@@ -91,15 +91,6 @@ class PALSroot(BaseModel):
             data = inner
         data = dict(data)
 
-        # Authors are written as one-key `author:` dicts; unwrap them.
-        if isinstance(data.get("authors"), list):
-            data["authors"] = [
-                entry["author"]
-                if isinstance(entry, dict) and set(entry) == {"author"}
-                else entry
-                for entry in data["authors"]
-            ]
-
         # Unpack each facility element's name; facility is optional.
         if data.get("facility") is not None:
             if not isinstance(data["facility"], list):
@@ -115,13 +106,6 @@ class PALSroot(BaseModel):
 
         # Keep `version` in the output even when unset.
         data = {"version": self.version, **data}
-
-        # Restore the one-key `author:` form of each authors entry.
-        if self.authors is not None:
-            data["authors"] = [
-                {"author": author.model_dump(*args, **kwargs)}
-                for author in self.authors
-            ]
 
         # Reformat facility elements into their one-key named form.
         if self.facility is not None:
