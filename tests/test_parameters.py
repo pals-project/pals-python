@@ -171,7 +171,10 @@ class TestPlacementParameters:
         with pytest.raises(ValidationError):
             PlacementParameters(from_point="INVALID")
 
-    def test_construction_with_nan_or_inf_offset(self):
+    def test_construction_raises_error_with_nonnumeric_offset(self):
+        with pytest.raises(ValidationError):
+            PlacementParameters(offset="error")
+
         with pytest.raises(ValidationError):
             PlacementParameters(offset=math.nan)
 
