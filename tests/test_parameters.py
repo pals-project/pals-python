@@ -149,7 +149,9 @@ class TestPlacementParameters:
         assert placement.from_point == "EXIT_END"
 
     def test_fully_specified_construction(self):
-        placement = PlacementParameters(offset=10.0, to_point="CENTER", base_item="q1", from_point="CENTER")
+        placement = PlacementParameters(
+            offset=10.0, to_point="CENTER", base_item="q1", from_point="CENTER"
+        )
 
         assert placement.offset == 10.0
         assert placement.to_point == "CENTER"

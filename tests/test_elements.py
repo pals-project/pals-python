@@ -625,8 +625,8 @@ def test_PlaceholderName_direct():
     drift.length = 3.0
     assert ref1.element.length == 3.0  # Change is visible through reference
 
-class TestElementsWithPlacementParameters:
 
+class TestElementsWithPlacementParameters:
     @pytest.fixture(autouse=True)
     def _create_line(self):
         import yaml
@@ -657,7 +657,6 @@ class TestElementsWithPlacementParameters:
         """)
 
         self._beamline = pals.BeamLine(**data)
-
 
     def test_valid_beamline(self):
         assert isinstance(self._beamline, pals.BeamLine)
