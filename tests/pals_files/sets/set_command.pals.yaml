@@ -1,0 +1,20 @@
+# The `set` command in its mapping form: an expression value that uses
+# PARAMETER, a pattern that matches several elements, and the optional error
+# terms.
+PALS:
+  version: null
+
+  facility:
+    - d1:
+        kind: Drift
+        length: 1.0
+
+    - set:
+        parameter: d1>length
+        value: 2 * PARAMETER
+
+    - set:
+        parameter: B1.*>BendP.e1
+        value: 0.25
+        absolute_error: 0.001
+        relative_error: 0.02
