@@ -6,6 +6,7 @@ from pals.parameters import (
     BodyShiftParameters,
     FloorParameters,
     MetaParameters,
+    PlacementParameters,
     ReferenceParameters,
     ReferenceChangeParameters,
     TrackingParameters,
@@ -22,6 +23,7 @@ class BaseElement(BaseModel, validate_assignment=True):
     name: str
 
     # Common parameter groups (optional for all elements)
+    placement: PlacementParameters | None = None
     ApertureP: ApertureParameters | None = None
     BodyShiftP: BodyShiftParameters | None = None
     FloorP: FloorParameters | None = None
