@@ -3,12 +3,14 @@ from pydantic import BaseModel, ConfigDict
 from pydantic import model_validator
 from typing import Self
 
+from .commands.all_commands import get_all_command_types
 from .kinds import Lattice
 from .kinds.all_elements import get_all_elements_as_annotation
 from .functions import load_file_to_dict, store_dict_to_file
 
 
-Facility = list[get_all_elements_as_annotation()]
+# Unlike an element list, the facility list also holds commands.
+Facility = list[get_all_elements_as_annotation(extra_types=get_all_command_types())]
 
 
 class Author(BaseModel):
@@ -95,7 +97,9 @@ class PALSroot(BaseModel):
         if data.get("facility") is not None:
             if not isinstance(data["facility"], list):
                 raise TypeError("'facility' must be a list")
-            data["facility"] = unpack_element_items(data["facility"], "facility")
+            data["facility"] = unpack_element_items(
+                data["facility"], "facility", allow_commands=True
+            )
 
         return data
 

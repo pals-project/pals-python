@@ -1,0 +1,6 @@
+# Each `sets` entry writes one parameter, so it holds exactly one key.
+PALS:
+  facility:
+    - sets:
+        - d1>length: 1.0
+          q1>length: 2.0

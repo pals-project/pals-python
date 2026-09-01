@@ -4,7 +4,6 @@
 # to load as an error, so this list shrinks as support lands. Blank lines and
 # `#` comments are ignored.
 
-# The sequence form of `variables` and the compact `sets` form are not
-# modeled.
+# The sequence form of `variables` is not modeled, and expressions are not
+# accepted where a parameter is typed as a number (e.g. `length: 0.1*log(x)`).
 unit_tests/expressions/inline_expressions.pals.yaml
-unit_tests/sets/sets_compact.pals.yaml
