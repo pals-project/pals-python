@@ -1,3 +1,5 @@
+import math
+
 import pytest
 from pydantic import ValidationError
 
@@ -12,6 +14,7 @@ from pals import (
     MagneticMultipoleParameters,
     MetaParameters,
     PatchParameters,
+    PlacementParameters,
     ReferenceChangeParameters,
     ReferenceParameters,
     RFParameters,
@@ -134,3 +137,48 @@ def test_ParameterClasses():
     # Test BeamBeamParameters
     beambeam = BeamBeamParameters()
     assert beambeam is not None
+
+
+class TestPlacementParameters:
+    def test_default_construction(self):
+        placement = PlacementParameters()
+
+        assert placement.offset == 0.0
+        assert placement.to_point == "ENTRANCE_END"
+        assert placement.base_item is None
+        assert placement.from_point == "EXIT_END"
+
+    def test_fully_specified_construction(self):
+        placement = PlacementParameters(
+            offset=10.0, to_point="CENTER", base_item="q1", from_point="CENTER"
+        )
+
+        assert placement.offset == 10.0
+        assert placement.to_point == "CENTER"
+        assert placement.base_item == "q1"
+        assert placement.from_point == "CENTER"
+
+    def test_construction_with_all_reference_points(self):
+        from itertools import combinations
+
+        ref_pts = ("ENTRANCE_END", "CENTER", "EXIT_END", "ZERO_POINT")
+
+        for p1, p2 in combinations(ref_pts, 2):
+            PlacementParameters(to_point=p1, from_point=p2)
+
+    def test_construction_with_invalid_reference_points(self):
+        with pytest.raises(ValidationError):
+            PlacementParameters(to_point="INVALID")
+
+        with pytest.raises(ValidationError):
+            PlacementParameters(from_point="INVALID")
+
+    def test_construction_raises_error_with_nonnumeric_offset(self):
+        with pytest.raises(ValidationError):
+            PlacementParameters(offset="error")
+
+        with pytest.raises(ValidationError):
+            PlacementParameters(offset=math.nan)
+
+        with pytest.raises(ValidationError):
+            PlacementParameters(offset=math.inf)
