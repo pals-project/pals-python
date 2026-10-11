@@ -624,3 +624,71 @@ def test_PlaceholderName_direct():
     # Modify the original and verify the reference sees the change
     drift.length = 3.0
     assert ref1.element.length == 3.0  # Change is visible through reference
+
+
+class TestElementsWithPlacementParameters:
+    @pytest.fixture(autouse=True)
+    def _create_line(self):
+        import yaml
+
+        data = yaml.safe_load("""
+        test_line:
+            kind: BeamLine
+            line:
+              - marker1:
+                  kind: Marker
+              - quad1:
+                  kind: Quadrupole
+                  length: 1.0
+                  MagneticMultipoleP:
+                    Bn1: 1.0
+                  placement:
+                      offset: 1.0
+                      base_item: marker1
+                      to_point: CENTER
+                      from_point: ENTRANCE_END
+              - marker2:
+                  kind: Marker
+                  placement:
+                      offset: 3.0
+                      base_item: marker1
+                      to_point: CENTER
+                      from_point: ENTRANCE_END
+        """)
+
+        self._beamline = pals.BeamLine(**data)
+
+    def test_valid_beamline(self):
+        assert isinstance(self._beamline, pals.BeamLine)
+        assert len(self._beamline.line) == 3
+
+    def test_marker_constructed_without_placement_parameters(self):
+        marker = self._beamline.line[0]
+
+        assert isinstance(marker, pals.Marker)
+        assert marker.name == "marker1"
+        assert marker.placement is None
+
+    def test_quadrupole_constructed_with_placement_parameters(self):
+        quad = self._beamline.line[1]
+
+        assert isinstance(quad, pals.Quadrupole)
+        assert quad.name == "quad1"
+        assert quad.length == 1.0
+        assert quad.MagneticMultipoleP.Bn1 == 1.0
+        assert quad.placement is not None
+        assert quad.placement.offset == 1.0
+        assert quad.placement.base_item == "marker1"
+        assert quad.placement.to_point == "CENTER"
+        assert quad.placement.from_point == "ENTRANCE_END"
+
+    def test_marker_constructed_with_placement_parameters(self):
+        marker = self._beamline.line[2]
+
+        assert isinstance(marker, pals.Marker)
+        assert marker.name == "marker2"
+        assert marker.placement is not None
+        assert marker.placement.offset == 3.0
+        assert marker.placement.base_item == "marker1"
+        assert marker.placement.to_point == "CENTER"
+        assert marker.placement.from_point == "ENTRANCE_END"
