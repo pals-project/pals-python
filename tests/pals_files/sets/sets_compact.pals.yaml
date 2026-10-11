@@ -1,0 +1,14 @@
+# The compact `sets` form: an ordered sequence of parameter/value pairs. Being
+# a sequence, it keeps its order and may name the same parameter twice.
+PALS:
+  version: null
+
+  facility:
+    - d1:
+        kind: Drift
+        length: 1.0
+
+    - sets:
+        - d1>length: 2 * 1.5
+        - q1>MagneticMultipoleP.Kn1L: 0.25
+        - d1>length: 3.0
