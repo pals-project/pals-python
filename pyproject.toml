@@ -50,3 +50,6 @@ Issues = "https://github.com/campa-consortium/pals-python/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff.lint]
+ignore = ["N999"]

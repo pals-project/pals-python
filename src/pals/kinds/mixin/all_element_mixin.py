@@ -4,8 +4,8 @@ This provides common YAML/JSON/... unpacking and model dumping logic for
 BeamLine and UnionEle classes.
 """
 
-from . import BaseElement
 from ..PlaceholderName import PlaceholderName
+from . import BaseElement
 
 
 def unpack_element_items(items: list, container_type: str) -> list:
@@ -41,7 +41,7 @@ def unpack_element_items(items: list, container_type: str) -> list:
                     f"Each element must be a dict with exactly one key (the element's name), "
                     f"but we got {item!r}"
                 )
-            name, fields = list(item.items())[0]
+            name, fields = next(iter(item.items()))
             # In addition to the existing shorthand `- element_name`
             # (a plain string reference), also allow the alternative
             # reference syntax `- use: element_name`.
@@ -92,7 +92,7 @@ def unpack_element_list_structure(
     """
     # Handle the top-level one-key dict: unpack the container's name
     if isinstance(data, dict) and len(data) == 1:
-        name, value = list(data.items())[0]
+        name, value = next(iter(data.items()))
         if not isinstance(value, dict):
             raise TypeError(
                 f"Value for {container_type} key {name!r} must be a dict, but we got {value!r}"

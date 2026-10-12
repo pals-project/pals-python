@@ -1,5 +1,6 @@
-from pydantic import model_validator  # noqa
 from typing import Literal
+
+from pydantic import Field, model_validator
 
 from .all_elements import get_all_elements_as_annotation
 from .mixin import BaseElement
@@ -12,7 +13,7 @@ class UnionEle(BaseElement):
     kind: Literal["UnionEle"] = "UnionEle"
 
     # Elements in the union - uses the same union type as BeamLine
-    elements: list[get_all_elements_as_annotation()] = []
+    elements: list[get_all_elements_as_annotation()] = Field(default_factory=list)
 
     @model_validator(mode="before")
     @classmethod

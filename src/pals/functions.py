@@ -121,9 +121,9 @@ def load_file_to_dict(
 
     # Attempt to strip two levels of file extensions to determine the schema.
     #   Examples: fodo.pals.yaml, fodo.pals.json, ...
-    file_noext, extension, file_noext_noext, extension_inner = inspect_file_extensions(
-        filename, sub_level=sub_level
-    ).values()
+    _file_noext, extension, _file_noext_noext, _extension_inner = (
+        inspect_file_extensions(filename, sub_level=sub_level).values()
+    )
 
     # examples: fodo.pals.yaml, fodo.pals.json
     with open(filename, "r") as file:
@@ -178,9 +178,9 @@ def _numpy_to_native(obj):
 
 
 def store_dict_to_file(filename: str, pals_dict: dict):
-    file_noext, extension, file_noext_noext, extension_inner = inspect_file_extensions(
-        filename
-    ).values()
+    _file_noext, extension, _file_noext_noext, _extension_inner = (
+        inspect_file_extensions(filename).values()
+    )
 
     # examples: fodo.pals.yaml, fodo.pals.json
     if extension == ".json":
