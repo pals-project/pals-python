@@ -1,13 +1,14 @@
-from pydantic import BaseModel
 from typing import Literal
+
+from pydantic import BaseModel
 
 from pals.parameters import (
     ApertureParameters,
     BodyShiftParameters,
     FloorParameters,
     MetaParameters,
-    ReferenceParameters,
     ReferenceChangeParameters,
+    ReferenceParameters,
     TrackingParameters,
 )
 
