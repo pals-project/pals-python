@@ -1,11 +1,11 @@
 from typing import Literal
 
-from .mixin import ThickElement
 from ..parameters import (
     BendParameters,
     ElectricMultipoleParameters,
     MagneticMultipoleParameters,
 )
+from .mixin import ThickElement
 
 
 class SBend(ThickElement):

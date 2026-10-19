@@ -1,12 +1,10 @@
-from pydantic import BaseModel, ConfigDict
-
-from pydantic import model_validator
 from typing import Self
 
+from pydantic import BaseModel, ConfigDict, model_validator
+
+from .functions import load_file_to_dict, store_dict_to_file
 from .kinds import Lattice
 from .kinds.all_elements import get_all_elements_as_annotation
-from .functions import load_file_to_dict, store_dict_to_file
-
 
 Facility = list[get_all_elements_as_annotation()]
 

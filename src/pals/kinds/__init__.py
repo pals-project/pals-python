@@ -4,8 +4,7 @@ simpler import statements like `from pals import Drift`.
 
 from .ACKicker import ACKicker  # noqa: F401
 from .BeamBeam import BeamBeam  # noqa: F401
-from .BeamLine import BeamLine  # noqa: F401
-from .Lattice import Lattice  # noqa: F401
+from .BeamLine import BeamLine
 from .BeginningEle import BeginningEle  # noqa: F401
 from .Converter import Converter  # noqa: F401
 from .CrabCavity import CrabCavity  # noqa: F401
@@ -19,6 +18,7 @@ from .Fork import Fork  # noqa: F401
 from .Girder import Girder  # noqa: F401
 from .Instrument import Instrument  # noqa: F401
 from .Kicker import Kicker  # noqa: F401
+from .Lattice import Lattice
 from .Marker import Marker  # noqa: F401
 from .Mask import Mask  # noqa: F401
 from .Match import Match  # noqa: F401
@@ -34,9 +34,8 @@ from .SBend import SBend  # noqa: F401
 from .Sextupole import Sextupole  # noqa: F401
 from .Solenoid import Solenoid  # noqa: F401
 from .Taylor import Taylor  # noqa: F401
-from .UnionEle import UnionEle  # noqa: F401
+from .UnionEle import UnionEle
 from .Wiggler import Wiggler  # noqa: F401
-
 
 # Rebuild pydantic models that depend on other classes
 UnionEle.model_rebuild()
