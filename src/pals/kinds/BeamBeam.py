@@ -1,7 +1,7 @@
 from typing import Literal
 
-from .mixin import BaseElement
 from ..parameters import BeamBeamParameters
+from .mixin import BaseElement
 from .utils import under_construction
 
 
