@@ -1,10 +1,11 @@
-from pydantic import model_validator
 from typing import Literal, Self
 
-from .BeamLine import BeamLine
-from .PlaceholderName import PlaceholderName
-from .mixin import BaseElement
+from pydantic import model_validator
+
 from ..functions import load_file_to_dict, store_dict_to_file
+from .BeamLine import BeamLine
+from .mixin import BaseElement
+from .PlaceholderName import PlaceholderName
 
 
 class Lattice(BaseElement):
@@ -39,8 +40,8 @@ class Lattice(BaseElement):
         pals_dict = load_file_to_dict(filename)
 
         if isinstance(pals_dict, dict) and "PALS" in pals_dict:
-            from pals.PALS import PALSroot
             from pals.kinds.PlaceholderName import PlaceholderName
+            from pals.PALS import PALSroot
 
             pals_root = PALSroot(**pals_dict)
             facility = pals_root.facility or []

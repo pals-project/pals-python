@@ -2,8 +2,8 @@ from typing import Literal, Self
 
 from pydantic import model_validator
 
+from ..parameters import ElectricMultipoleParameters, MagneticMultipoleParameters
 from .mixin import ThickElement
-from ..parameters import MagneticMultipoleParameters, ElectricMultipoleParameters
 
 
 class Quadrupole(ThickElement):

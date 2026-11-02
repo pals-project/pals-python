@@ -13,7 +13,6 @@ from .Converter import Converter
 from .CrabCavity import CrabCavity
 from .Drift import Drift
 from .EGun import EGun
-from .PlaceholderName import PlaceholderName
 from .Feedback import Feedback
 from .Fiducial import Fiducial
 from .FloorShift import FloorShift
@@ -29,6 +28,7 @@ from .Multipole import Multipole
 from .NullEle import NullEle
 from .Octupole import Octupole
 from .Patch import Patch
+from .PlaceholderName import PlaceholderName
 from .Quadrupole import Quadrupole
 from .RBend import RBend
 from .RFCavity import RFCavity
