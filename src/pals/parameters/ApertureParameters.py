@@ -1,5 +1,6 @@
-from annotated_types import Ge
 from typing import Annotated, Literal
+
+from annotated_types import Ge
 from pydantic import BaseModel, Field, field_validator
 
 
