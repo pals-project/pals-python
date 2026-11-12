@@ -1,9 +1,12 @@
-from pals import MagneticMultipoleParameters
-from pals import Drift
-from pals import Quadrupole
-from pals import BeamLine
-from pals import Lattice
-from pals import load, store
+from pals import (
+    BeamLine,
+    Drift,
+    Lattice,
+    MagneticMultipoleParameters,
+    Quadrupole,
+    load,
+    store,
+)
 
 
 def main():
