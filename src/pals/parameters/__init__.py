@@ -13,6 +13,7 @@ from .ForkParameters import ForkParameters  # noqa: F401
 from .MagneticMultipoleParameters import MagneticMultipoleParameters  # noqa: F401
 from .MetaParameters import MetaParameters  # noqa: F401
 from .PatchParameters import PatchParameters  # noqa: F401
+from .PlacementParameters import PlacementParameters  # noqa: F401
 from .ReferenceChangeParameters import ReferenceChangeParameters  # noqa: F401
 from .ReferenceParameters import ReferenceParameters  # noqa: F401
 from .RFParameters import RFParameters  # noqa: F401
