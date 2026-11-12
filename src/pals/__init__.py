@@ -4,6 +4,7 @@ Re-export commonly used classes from submodules so callers can use
 simpler import statements like `from pals import Drift`.
 """
 
+from .commands import *  # noqa
 from .kinds import *  # noqa
 from .parameters import *  # noqa
 from .PALS import Author, ExtensionLabels, PALSroot, load, store  # noqa

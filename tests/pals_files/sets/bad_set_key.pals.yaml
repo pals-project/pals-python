@@ -1,0 +1,8 @@
+# The `set` command has a fixed set of properties, so a misspelled one is an
+# error rather than a silently kept extra.
+PALS:
+  facility:
+    - set:
+        parameter: d1>length
+        value: 1.0
+        absolut_error: 0.001

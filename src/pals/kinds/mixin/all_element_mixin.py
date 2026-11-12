@@ -8,7 +8,9 @@ from . import BaseElement
 from ..PlaceholderName import PlaceholderName
 
 
-def unpack_element_items(items: list, container_type: str) -> list:
+def unpack_element_items(
+    items: list, container_type: str, allow_commands: bool = False
+) -> list:
     """Deserialize the JSON/YAML/...-like items of an element list.
 
     Each item can be a reference string, a `use:` reference, a one-key dict
@@ -17,13 +19,31 @@ def unpack_element_items(items: list, container_type: str) -> list:
     Args:
         items: The list of raw element entries
         container_type: Type of container for error messages (e.g., "line" or "union")
+        allow_commands: Whether entries keyed by a reserved command keyword
+            (`set`, `sets`, ...) are commands rather than elements. Only the
+            `facility` list holds commands; element lists do not.
 
     Returns:
-        A new list with each entry unpacked to a dict, PlaceholderName, or element
+        A new list with each entry unpacked to a dict, PlaceholderName, command,
+        or element
     """
+    from pals.commands.all_commands import build_facility_command
+    from pals.commands.FacilityCommand import FacilityCommand
+
     new_list = []
     # Loop over all elements in the list
     for item in items:
+        # A facility entry keyed by a reserved keyword is a command, which is
+        # checked before the `{name: properties}` element form below.
+        if allow_commands:
+            if isinstance(item, FacilityCommand):
+                new_list.append(item)
+                continue
+            command = build_facility_command(item)
+            if command is not None:
+                new_list.append(command)
+                continue
+
         # An element can be a string that refers to another element
         if isinstance(item, str):
             # Wrap the string in a Placeholder name object

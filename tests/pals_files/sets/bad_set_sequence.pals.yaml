@@ -1,0 +1,5 @@
+# The `set` command holds its properties in a mapping, not a sequence.
+PALS:
+  facility:
+    - set:
+        - parameter: d1>length

@@ -1,0 +1,5 @@
+# The compact `sets` form is a sequence of pairs, not a mapping.
+PALS:
+  facility:
+    - sets:
+        d1>length: 1.0
