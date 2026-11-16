@@ -1,7 +1,7 @@
 from typing import Literal
 
-from .mixin import ThickElement
 from ..parameters import ElectricMultipoleParameters, MagneticMultipoleParameters
+from .mixin import ThickElement
 from .utils import under_construction
 
 
