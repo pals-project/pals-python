@@ -7,4 +7,4 @@
 #
 # The first non-comment line is the pin: a full commit SHA of
 # https://github.com/pals-project/pals
-7ffec924f6109bebfb6a54196737ab48893a9a9f
+b9d5b35555a63f7ba015460e1c17ac929d35e215
