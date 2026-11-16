@@ -1,7 +1,7 @@
 from typing import Literal
 
-from .mixin import BaseElement
 from ..parameters import FloorShiftParameters
+from .mixin import BaseElement
 
 
 class FloorShift(BaseElement):

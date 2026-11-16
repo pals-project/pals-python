@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, model_serializer
 from typing import Annotated
+
+from pydantic import BaseModel, Field, model_serializer
 
 from .mixin import BaseElement
 
