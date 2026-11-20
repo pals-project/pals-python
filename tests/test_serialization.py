@@ -151,7 +151,9 @@ def test_comprehensive_lattice(tmp_path):
         ApertureP=pals.ApertureParameters(
             shape="VERTICES",
             vertices=Vertices(
-                list=[Vertex(point=(-0.1, 0), radius=0.1), Vertex(point=(0.1, 0))])),
+                list=[Vertex(point=(-0.1, 0), radius=0.1), Vertex(point=(0.1, 0))]
+            ),
+        ),
     )
 
     # Solenoid
