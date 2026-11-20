@@ -148,7 +148,10 @@ def test_comprehensive_lattice(tmp_path):
         name="sextupole1",
         length=0.2,
         MagneticMultipoleP=pals.MagneticMultipoleParameters(Bn2=1.0),
-        ApertureP=pals.ApertureParameters(shape="VERTICES"),
+        ApertureP=pals.ApertureParameters(
+            shape="VERTICES",
+            vertices=Vertices(
+                list=[Vertex(point=(-0.1, 0), radius=0.1), Vertex(point=(0.1, 0))])),
     )
 
     # Solenoid
