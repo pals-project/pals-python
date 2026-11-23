@@ -1,5 +1,5 @@
-from pydantic import model_validator
-from typing import Literal, Self
+from pydantic import Field, model_validator
+from typing import Annotated, Literal, Self
 
 from .BeamLine import BeamLine
 from .PlaceholderName import PlaceholderName
@@ -12,7 +12,9 @@ class Lattice(BaseElement):
 
     kind: Literal["Lattice"] = "Lattice"
 
-    branches: list[BeamLine | PlaceholderName]
+    branches: list[
+        Annotated[BeamLine | PlaceholderName, Field(union_mode="left_to_right")]
+    ]
 
     @model_validator(mode="before")
     @classmethod

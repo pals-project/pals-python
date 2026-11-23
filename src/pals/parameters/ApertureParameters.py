@@ -1,6 +1,21 @@
+import builtins
+
 from annotated_types import Ge
 from typing import Annotated, Literal
 from pydantic import BaseModel, Field, field_validator
+
+
+class Vertex(BaseModel):
+    point: tuple[float, float]
+    radius: float | tuple[float, float] | None = None
+    convex: bool = True
+    tilt: float = 0
+
+
+class Vertices(BaseModel):
+    center: tuple[float, float] = Field(default=(0, 0))
+    absolute_vertices: bool = False
+    list: builtins.list[Vertex] = Field(default_factory=builtins.list)
 
 
 class ApertureParameters(BaseModel):
@@ -26,3 +41,4 @@ class ApertureParameters(BaseModel):
     thickness: Annotated[float, Ge(0.0)] = 0.0
     aperture_shifts_with_body: bool = False
     aperture_active: bool = True
+    vertices: Vertices | None = None

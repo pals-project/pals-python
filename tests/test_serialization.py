@@ -1,6 +1,7 @@
 import pytest
 
 import pals
+from pals.parameters.ApertureParameters import Vertex, Vertices
 
 
 def test_yaml(tmp_path):
@@ -147,7 +148,12 @@ def test_comprehensive_lattice(tmp_path):
         name="sextupole1",
         length=0.2,
         MagneticMultipoleP=pals.MagneticMultipoleParameters(Bn2=1.0),
-        ApertureP=pals.ApertureParameters(x_limits=[-0.1, 0.1]),
+        ApertureP=pals.ApertureParameters(
+            shape="VERTICES",
+            vertices=Vertices(
+                list=[Vertex(point=(-0.1, 0), radius=0.1), Vertex(point=(0.1, 0))]
+            ),
+        ),
     )
 
     # Solenoid
@@ -247,7 +253,7 @@ def test_comprehensive_lattice(tmp_path):
 
     # Test that parameter groups are correctly deserialized
     assert sextupole_loaded.MagneticMultipoleP.Bn2 == 1.0
-    assert sextupole_loaded.ApertureP.x_limits == [-0.1, 0.1]
+    assert sextupole_loaded.ApertureP.vertices.list[1].point == (0.1, 0)
 
     assert octupole_loaded.ElectricMultipoleP.En3 == 0.5
     assert octupole_loaded.MetaP.alias == "octupole_test"
@@ -305,7 +311,7 @@ def test_comprehensive_lattice(tmp_path):
 
     # Test that parameter groups are correctly deserialized
     assert sextupole_loaded_json.MagneticMultipoleP.Bn2 == 1.0
-    assert sextupole_loaded_json.ApertureP.x_limits == [-0.1, 0.1]
+    assert sextupole_loaded_json.ApertureP.vertices.list[1].point == (0.1, 0)
 
     assert octupole_loaded_json.ElectricMultipoleP.En3 == 0.5
     assert octupole_loaded_json.MetaP.alias == "octupole_test"
