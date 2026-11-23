@@ -311,7 +311,7 @@ def test_comprehensive_lattice(tmp_path):
 
     # Test that parameter groups are correctly deserialized
     assert sextupole_loaded_json.MagneticMultipoleP.Bn2 == 1.0
-    assert sextupole_loaded_json.ApertureP.x_limits == [-0.1, 0.1]
+    assert sextupole_loaded_json.ApertureP.vertices.list[1].point == (0.1, 0)
 
     assert octupole_loaded_json.ElectricMultipoleP.En3 == 0.5
     assert octupole_loaded_json.MetaP.alias == "octupole_test"
