@@ -4,7 +4,9 @@ This module creates a helper function that returns the element union type,
 avoiding duplication between BeamLine.line and UnionEle.elements.
 """
 
-from typing import Union
+from typing import Annotated, Union
+
+from pydantic import Field
 
 from .ACKicker import ACKicker
 from .BeamBeam import BeamBeam
@@ -89,6 +91,7 @@ def get_all_elements_as_annotation(extra_types: tuple | None = None):
     Pydantic will still properly validate the union by trying each type in order in
     our unpack_element_list_structure method.
     """
-    types = get_all_element_types(extra_types) + (PlaceholderName,)
+    element_types = Union[get_all_element_types(extra_types)]
+    types = Annotated[element_types | PlaceholderName, Field(union_mode="left_to_right")]
     # We can't use discriminator with PlaceholderName in the union since it has no 'kind' field
     return Union[types]
