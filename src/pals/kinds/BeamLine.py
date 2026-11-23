@@ -1,9 +1,10 @@
-from pydantic import model_validator
 from typing import Literal, Self
 
+from pydantic import model_validator
+
+from ..functions import load_file_to_dict, store_dict_to_file
 from .all_elements import get_all_elements_as_annotation
 from .mixin import BaseElement
-from ..functions import load_file_to_dict, store_dict_to_file
 
 
 class BeamLine(BaseElement):

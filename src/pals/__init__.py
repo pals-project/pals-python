@@ -5,7 +5,7 @@ simpler import statements like `from pals import Drift`.
 """
 
 from .kinds import *  # noqa
-from .parameters import *  # noqa
+from .parameters import *
 from .PALS import Author, ExtensionLabels, PALSroot, load, store  # noqa
 
 

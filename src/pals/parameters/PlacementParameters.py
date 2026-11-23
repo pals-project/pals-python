@@ -1,7 +1,6 @@
-from typing import Literal, Optional, TypeAlias
+from typing import Literal, TypeAlias
 
 from pydantic import BaseModel, Field
-
 
 ReferencePoint: TypeAlias = Literal["ENTRANCE_END", "CENTER", "EXIT_END", "ZERO_POINT"]
 
@@ -18,7 +17,7 @@ class PlacementParameters(BaseModel):
         description="Line item offset end point. Default is ENTRANCE_END.",
     )
 
-    base_item: Optional[str] = Field(
+    base_item: str | None = Field(
         default=None, description="Line item containing the `from_point`."
     )
 
