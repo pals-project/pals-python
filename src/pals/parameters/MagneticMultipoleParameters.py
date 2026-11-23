@@ -1,5 +1,6 @@
-from pydantic import BaseModel, ConfigDict, model_validator
 from typing import Any
+
+from pydantic import BaseModel, ConfigDict, model_validator
 
 # Valid parameter prefixes, their expected format and description
 _PARAMETER_PREFIXES = {

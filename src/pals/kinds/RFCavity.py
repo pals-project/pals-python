@@ -1,12 +1,12 @@
 from typing import Literal
 
-from .mixin import ThickElement
 from ..parameters import (
-    RFParameters,
-    SolenoidParameters,
     ElectricMultipoleParameters,
     MagneticMultipoleParameters,
+    RFParameters,
+    SolenoidParameters,
 )
+from .mixin import ThickElement
 from .utils import under_construction
 
 

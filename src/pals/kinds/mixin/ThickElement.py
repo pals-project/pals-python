@@ -1,4 +1,5 @@
 from typing import Annotated, Literal
+
 from annotated_types import Ge
 
 from . import BaseElement

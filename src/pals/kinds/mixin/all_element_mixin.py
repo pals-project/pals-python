@@ -4,8 +4,8 @@ This provides common YAML/JSON/... unpacking and model dumping logic for
 BeamLine and UnionEle classes.
 """
 
-from . import BaseElement
 from ..PlaceholderName import PlaceholderName
+from . import BaseElement
 
 
 def unpack_element_items(items: list, container_type: str) -> list:
