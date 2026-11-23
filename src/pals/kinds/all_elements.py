@@ -92,6 +92,8 @@ def get_all_elements_as_annotation(extra_types: tuple | None = None):
     our unpack_element_list_structure method.
     """
     element_types = Union[get_all_element_types(extra_types)]
-    types = Annotated[element_types | PlaceholderName, Field(union_mode="left_to_right")]
+    types = Annotated[
+        element_types | PlaceholderName, Field(union_mode="left_to_right")
+    ]
     # We can't use discriminator with PlaceholderName in the union since it has no 'kind' field
     return Union[types]

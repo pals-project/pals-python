@@ -12,7 +12,9 @@ class Lattice(BaseElement):
 
     kind: Literal["Lattice"] = "Lattice"
 
-    branches: list[Annotated[BeamLine | PlaceholderName,Field(union_mode="left_to_right")]]
+    branches: list[
+        Annotated[BeamLine | PlaceholderName, Field(union_mode="left_to_right")]
+    ]
 
     @model_validator(mode="before")
     @classmethod
